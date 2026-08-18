@@ -1,0 +1,73 @@
+/* AJWC design tokens — the single source of truth for brand values.
+   No hex may appear anywhere else in the codebase.
+
+   The brand ramp is sampled from the logo mark itself (see
+   scripts/build-logo.py, which draws the mark from the same value), not
+   chosen independently. If the mark changes, resample and change these. */
+
+:root {
+  /* --- brand ------------------------------------------------------
+     #20C2D2 measured at 10.3:1 against --bg, so unlike a typical brand
+     blue it is safe for small text, including 12px mono metadata. */
+  --brand: #20c2d2;
+  --brand-lift: #4fd6e4; /* hover, active, focus */
+  --brand-deep: #12707a; /* shadowed faces of the 3D mark */
+
+  /* --- ground ------------------------------------------------------
+     Warmed a few points off pure black so the cyan does not read as
+     cold-on-cold. */
+  --bg: #05070a;
+  --bg-raised: #0b0f15;
+  --bg-card: #11161e;
+  --border: #1e2630;
+
+  /* --- text -------------------------------------------------------- */
+  --text: #f2f5f8; /* 17.2:1 on --bg */
+  --text-muted: #8b97a6; /* 6.1:1 on --bg */
+
+  /* --- state ------------------------------------------------------- */
+  --danger: #ff6b4a;
+  --focus-ring: var(--brand-lift);
+
+  /* --- type -------------------------------------------------------
+     Three faces with a semantic split: display carries argument, body
+     carries narrative, and mono means evidence — box names, dates,
+     counts, anything the site is asserting as fact. */
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  /* --- spacing (8px rhythm) ---------------------------------------- */
+  --space-xs: 0.25rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 3.5rem;
+  --space-xl: 5.5rem;
+  --space-2xl: 8rem;
+
+  /* --- shape ------------------------------------------------------- */
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-pill: 999px;
+
+  /* --- layout ------------------------------------------------------ */
+  --content-width: 1200px;
+
+  /* --- motion ------------------------------------------------------
+     One easing curve across the whole site. Consistency in timing is
+     most of what separates considered motion from busy motion. */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 0.2s;
+  --dur-mid: 0.5s;
+  --dur-slow: 0.9s;
+}
+
+/* Motion tokens collapse rather than every animated rule needing its own
+   media query. Anything that reads a --dur-* token stops for free. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0.01ms;
+    --dur-mid: 0.01ms;
+    --dur-slow: 0.01ms;
+  }
+}
