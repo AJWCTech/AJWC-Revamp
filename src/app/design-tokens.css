@@ -7,11 +7,16 @@
 
 :root {
   /* --- brand ------------------------------------------------------
-     #20C2D2 measured at 10.3:1 against --bg, so unlike a typical brand
-     blue it is safe for small text, including 12px mono metadata. */
+     Sampled from the AJWC monogram artwork (58.6% of its ink is
+     #20C0D0). Contrast measured against --bg, not estimated:
+
+       --brand       10.3:1  safe everywhere, including small text
+       --brand-lift  12.4:1  hover, active, focus
+       --brand-deep   2.1:1  NEVER text. 3D shadowed faces only.
+  */
   --brand: #20c2d2;
-  --brand-lift: #4fd6e4; /* hover, active, focus */
-  --brand-deep: #12707a; /* shadowed faces of the 3D mark */
+  --brand-lift: #4fd6e4;
+  --brand-deep: #12707a;
 
   /* --- ground ------------------------------------------------------
      Warmed a few points off pure black so the cyan does not read as
