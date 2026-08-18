@@ -1,33 +1,107 @@
 /* Site-level facts and copy.
  *
- * Anything that needs a real-world fact I could not verify is marked
- * `TODO: confirm` in place rather than invented. Search the codebase for
- * that string before launch — it is the pre-flight checklist.
+ * Positioning: this is a WEB DEVELOPMENT portfolio whose job is to win
+ * clients. The Cyber Security degree is background credibility only — it
+ * is never the theme, and nothing here should read as hacker, terminal
+ * or security.
+ *
+ * Anything needing a real-world fact I could not verify is marked
+ * `TODO: confirm` rather than invented.
  */
 
 export const SITE = {
   name: "Archie Cook",
-  role: "Cyber Security",
-  // TODO: confirm — domain for the new site. Placeholder until hosting is decided.
+  role: "Web Developer",
+  // TODO: confirm — domain for the new site.
   url: "https://ajwctechconsulting.com",
   description:
-    "Cyber security graduate and director of AJWC Tech Consulting. Offensive security on one side, production web development on the other.",
+    "Web developer building fast, accessible websites for small businesses. Three client sites shipped through AJWC Tech Consulting.",
   location: "Wiltshire, UK",
   company: "AJWC Tech Consulting Ltd",
-  email: "archiecook7878@gmail.com", // TODO: confirm — use a business address instead?
+  email: "archiecook7878@gmail.com", // TODO: confirm — business address instead?
   links: {
     linkedin: "https://www.linkedin.com/in/archiecook",
-    // TODO: confirm — GitHub, HackTheBox and TryHackMe profile URLs.
-    github: "",
-    hackthebox: "",
-    tryhackme: "",
+    github: "", // TODO: confirm
   },
 } as const;
 
-/* The scene map from the approved plan, as data. Components never call
- * the camera directly; they declare which state they are in and the
- * scene interpolates between them. Adding a section means adding an
- * entry here and a matching <Section id>. */
+/* --- work: the centrepiece ------------------------------------------
+ * Each entry becomes one 3D card in the Work section. `assetKey` points
+ * into the asset manifest so imagery swaps without touching this file. */
+
+export type WorkItem = {
+  slug: string;
+  client: string;
+  sector: string;
+  summary: string;
+  /** What the site had to achieve — the client-facing reason it exists. */
+  outcome: string;
+  stack: string[];
+  assetKey: "work-kritikal" | "work-umbra" | "work-white-phoenix";
+  url?: string;
+};
+
+export const WORK: WorkItem[] = [
+  {
+    slug: "kritikal",
+    client: "Kritikal Soundsystem",
+    sector: "Audio hire, Bristol",
+    summary:
+      "A hire catalogue people can actually price up, instead of a phone number and a promise.",
+    outcome:
+      "Real prices on the page, so enquiries arrive already qualified.",
+    stack: ["Design", "Build", "Content structure"],
+    assetKey: "work-kritikal",
+    // TODO: confirm — live URL to link the card to.
+  },
+  {
+    slug: "umbra",
+    client: "Umbra",
+    sector: "Artist",
+    summary:
+      "A release page built around one striking visual idea, kept fast enough to open on a phone at a gig.",
+    outcome: "A site that looks like the music without costing load time.",
+    stack: ["Design", "Build", "WebGL"],
+    assetKey: "work-umbra",
+  },
+  {
+    slug: "white-phoenix",
+    client: "White Phoenix",
+    sector: "Oracle consultancy",
+    summary:
+      "A credibility-first site for a consultancy selling to enterprise buyers who check before they call.",
+    outcome: "Positions a two-person firm to be taken seriously by large clients.",
+    stack: ["Design", "Build", "3D"],
+    assetKey: "work-white-phoenix",
+  },
+];
+
+/* --- services -------------------------------------------------------- */
+
+export const SERVICES = [
+  {
+    title: "Websites for small businesses",
+    body: "Design and build, start to finish. Fast, accessible, and structured so customers find what they came for.",
+  },
+  {
+    title: "Redesigns and rebuilds",
+    body: "An existing site that loads slowly, reads badly on a phone, or no longer matches the business.",
+  },
+  {
+    title: "Interactive and 3D work",
+    body: "Motion and WebGL where it earns its place — for brands that need to look different, not just present.",
+  },
+  {
+    title: "Handover and support",
+    body: "Built so you can run it yourself, with the option of keeping me on for changes.",
+  },
+] as const;
+
+/* --- 3D scene map -----------------------------------------------------
+ * Camera and mark state per section, as data. Components never move the
+ * camera; Scene.tsx interpolates between these. Adding a section means
+ * adding an entry here and a matching <section id>. */
+
 export type SceneState = {
   id: string;
   camera: [number, number, number];
@@ -40,16 +114,18 @@ export type SceneState = {
 
 export const SCENE_STATES: SceneState[] = [
   { id: "hero", camera: [0, 0, 4.2], target: [0, 0, 0], markPresence: 1, markSpin: 0 },
-  { id: "security", camera: [3.2, 0.6, 3.4], target: [1.2, 0, 0], markPresence: 0.55, markSpin: 0.6 },
-  { id: "work", camera: [-2.8, -0.4, 3.8], target: [-0.8, 0, 0], markPresence: 0.3, markSpin: 1.2 },
-  { id: "about", camera: [0, 1.4, 5.2], target: [0, 0.3, 0], markPresence: 0.45, markSpin: 1.8 },
-  { id: "education", camera: [0, -1.1, 4.6], target: [0, -0.4, 0], markPresence: 0.35, markSpin: 2.4 },
+  // The mark recedes hard through Work: the client sites are the subject
+  // there, and a spinning logo competing with them would be the exact
+  // "gimmicky" failure the brief warns about.
+  { id: "work", camera: [-2.4, -0.3, 4.6], target: [-0.9, 0, 0], markPresence: 0.16, markSpin: 0.9 },
+  { id: "about", camera: [0, 1.2, 5.0], target: [0, 0.3, 0], markPresence: 0.5, markSpin: 1.6 },
+  { id: "services", camera: [2.6, 0.4, 4.0], target: [1.0, 0, 0], markPresence: 0.4, markSpin: 2.3 },
   { id: "contact", camera: [0, 0, 3.0], target: [0, 0, 0], markPresence: 1, markSpin: 3.14159 },
 ];
 
 export const NAV = [
-  { href: "#security", label: "Security" },
   { href: "#work", label: "Work" },
   { href: "#about", label: "About" },
+  { href: "#services", label: "Services" },
   { href: "#contact", label: "Contact" },
 ] as const;

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/content/site";
 import { JsonLd } from "@/components/JsonLd";
@@ -21,12 +21,10 @@ const body = Inter({
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-});
+/* JetBrains Mono was removed deliberately. It carried the old
+   "mono means evidence" rule, which reads as terminal — exactly the
+   aesthetic this site must not have. Small labels now use the display
+   face in uppercase with wide tracking instead. */
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -69,7 +67,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en-GB"
-      className={`${display.variable} ${body.variable} ${mono.variable} h-full`}
+      className={`${display.variable} ${body.variable} h-full`}
     >
       <body className="min-h-full">
         <a className="skip-link" href="#main">

@@ -30,12 +30,11 @@
   --focus-ring: var(--brand-lift);
 
   /* --- type -------------------------------------------------------
-     Three faces with a semantic split: display carries argument, body
-     carries narrative, and mono means evidence — box names, dates,
-     counts, anything the site is asserting as fact. */
+     Two faces, not three. A monospace was dropped on purpose: it reads
+     as terminal, which is the one aesthetic this site must avoid. Small
+     labels use the display face in uppercase with wide tracking. */
   --font-display: var(--font-space-grotesk), system-ui, sans-serif;
   --font-body: var(--font-inter), system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 
   /* --- spacing (8px rhythm) ---------------------------------------- */
   --space-xs: 0.25rem;

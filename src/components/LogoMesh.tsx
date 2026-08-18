@@ -34,7 +34,9 @@ export function LogoMesh({
   const geometry = useMemo(() => {
     const geos: THREE.ExtrudeGeometry[] = [];
     for (const path of data.paths) {
-      for (const shape of SVGLoader.createShapes(path)) {
+      // three 0.185 deprecates SVGLoader.createShapes() in favour of
+      // the ShapePath's own toShapes().
+      for (const shape of path.toShapes()) {
         geos.push(
           new THREE.ExtrudeGeometry(shape, {
             depth: 6,
@@ -88,7 +90,12 @@ export function LogoMesh({
               emissive={BRAND}
               emissiveIntensity={i === 0 ? 0.22 : 0.06}
               transparent
-              opacity={0.35 + presence * 0.65}
+              /* Opacity follows presence almost linearly. An earlier
+                 version floored this at 0.35, which meant a state asking
+                 for 0.16 still rendered at 45% and the mark sat over the
+                 work cards competing with them. The floor is now low
+                 enough that "recede" actually recedes. */
+              opacity={0.04 + presence * 0.96}
             />
           </mesh>
         ))}

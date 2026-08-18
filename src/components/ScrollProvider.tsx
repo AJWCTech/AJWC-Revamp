@@ -50,8 +50,35 @@ export function ScrollProvider({
     };
     raf.current = requestAnimationFrame(loop);
 
+    /* Anchor links must go through Lenis. A native jump moves the page
+       without Lenis emitting "scroll", so the 3D scene keeps the state
+       it had before the jump while the DOM is somewhere else entirely —
+       the mark stays at hero presence over the Work section. Routing
+       clicks through scrollTo keeps the two in step. */
+    const onAnchorClick = (e: MouseEvent) => {
+      const link = (e.target as HTMLElement | null)?.closest?.('a[href^="#"]');
+      if (!link) return;
+      const hash = link.getAttribute("href");
+      if (!hash || hash === "#") return;
+      const target = document.querySelector(hash);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target as HTMLElement, { offset: -72 });
+    };
+    document.addEventListener("click", onAnchorClick);
+
+    // A page loaded with a hash already applied lands mid-document, so
+    // seed the state from where we actually are rather than from zero.
+    const seed = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const p = max > 0 ? window.scrollY / max : 0;
+      setState({ progress: p, sceneIndex: p * (sectionCount - 1) });
+    };
+    seed();
+
     return () => {
       cancelAnimationFrame(raf.current);
+      document.removeEventListener("click", onAnchorClick);
       lenis.off("scroll", onScroll);
       lenis.destroy();
     };
