@@ -3,7 +3,6 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { usePathname } from "next/navigation";
 import { SCENE_STATES } from "@/content/site";
 import { useScrollProgress } from "./ScrollProvider";
 import { LogoMesh } from "./LogoMesh";
@@ -61,48 +60,30 @@ function BudgetProbe() {
   return null;
 }
 
-/* Inner pages get their own two-point camera travel, driven by that
-   page's own scroll.
-
-   A single fixed state was the first attempt and it was too still: with
-   the camera pinned, the only movement left was the pointer's sideways
-   lean and the idle spin, so the mark never drifted down the screen the
-   way it does on the homepage. These two states give the same
-   scroll-follows-you feel without borrowing the homepage's section
-   choreography, which means nothing on /privacy. */
-const INNER_PAGE_FROM = {
-  camera: [0.6, 0.75, 4.4] as [number, number, number],
-  target: [0, 0.25, 0] as [number, number, number],
-  markPresence: 0.55,
-  markSpin: 0.35,
-};
-
-const INNER_PAGE_TO = {
-  camera: [-0.5, -0.85, 5.0] as [number, number, number],
-  target: [0, -0.3, 0] as [number, number, number],
-  markPresence: 0.4,
-  markSpin: 1.5,
-};
-
 
 
 function Rig() {
   const { camera } = useThree();
-  const { sceneIndex, progress } = useScrollProgress();
-  const pathname = usePathname();
-  const isHome = pathname === "/";
+  const { sceneIndex } = useScrollProgress();
   const camPos = useRef(new THREE.Vector3(0, 0, 4.2));
   const target = useRef(new THREE.Vector3());
 
+  /* EVERY page runs the full choreography, not just the homepage.
+   *
+   * Inner pages briefly had their own two-point sweep, on the reasoning
+   * that SCENE_STATES describes the homepage's sections and means
+   * nothing on /privacy. True in principle, but it read as the mark
+   * simply sinking down the screen while the homepage got the good
+   * version — so the states are now treated as an abstract camera path
+   * that any page's scroll can drive, rather than as section markers.
+   *
+   * sceneIndex is scroll progress scaled across the states, so a short
+   * page plays the same path over a shorter distance. */
   const i = Math.max(0, Math.min(SCENE_STATES.length - 1, Math.floor(sceneIndex)));
   const j = Math.min(SCENE_STATES.length - 1, i + 1);
-
-  /* Homepage: step through the section states. Inner pages: one smooth
-     sweep across the page's own scroll, so the mark travels vertically
-     there too rather than sitting at a fixed height. */
-  const t = isHome ? sceneIndex - i : progress;
-  const from = isHome ? SCENE_STATES[i] : INNER_PAGE_FROM;
-  const to = isHome ? SCENE_STATES[j] : INNER_PAGE_TO;
+  const t = sceneIndex - i;
+  const from = SCENE_STATES[i];
+  const to = SCENE_STATES[j];
 
   useFrame(() => {
     lerpVec(camPos.current, from.camera, to.camera, t);
