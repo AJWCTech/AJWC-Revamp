@@ -176,6 +176,39 @@ export const PROJECT_AREAS = [
   },
 ] as const;
 
+/* --- contact enquiry types -------------------------------------------
+ * Posted as the `subject` field, which contact.php already requires and
+ * uses as the email subject line — so the handler needs no changes and
+ * enquiries arrive pre-sorted in the inbox.
+ *
+ * Grouped because eight flat options is a wall. The grouping also does
+ * real work: it separates "I want you to build something" from "I want
+ * to employ you", which are different conversations.
+ *
+ * Labels must stay under 120 characters (MAX_SUBJECT_LEN in contact.php)
+ * and must avoid the words in its spam filter — no URLs, no "buy now".
+ */
+
+export const ENQUIRY_GROUPS = [
+  {
+    label: "Project work",
+    options: [
+      "New website or app",
+      "Quote or estimate",
+      "Redesign or rebuild of an existing site",
+      "Support or changes to an existing site",
+    ],
+  },
+  {
+    label: "Working together",
+    options: ["Contract or freelance work", "Hiring for a role"],
+  },
+  {
+    label: "Anything else",
+    options: ["General question", "Something else"],
+  },
+] as const;
+
 /* Company details as published on the original legal pages. These are
  * real registered details — do not edit without checking Companies House
  * and the ICO register. */

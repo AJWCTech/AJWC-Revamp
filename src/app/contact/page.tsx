@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader } from "@/components/PageShell";
 import { Reveal } from "@/components/Reveal";
-import { SITE } from "@/content/site";
+import { SITE, ENQUIRY_GROUPS } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -28,12 +28,22 @@ export default function ContactPage() {
         <div className="grid gap-16 md:grid-cols-[1fr_300px]">
           <Reveal>
             <form action="/contact.php" method="post" className="max-w-[46ch]">
-              {/* Honeypot: real people never fill this in. Hidden from
-                  assistive tech as well as sight, so it is not a trap
-                  for screen reader users. */}
+              {/* Honeypots: real people never fill these in. contact.php
+                  checks BOTH `website` and `company_url` — the form only
+                  had the first, so half the trap was missing. Hidden from
+                  assistive tech as well as sight, so it is not a trap for
+                  screen reader users either. */}
               <p className="hidden" aria-hidden="true">
                 <label htmlFor="website">Leave this field empty</label>
                 <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+                <label htmlFor="company_url">Leave this field empty too</label>
+                <input
+                  type="text"
+                  id="company_url"
+                  name="company_url"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
               </p>
 
               <div className="mb-6">
@@ -64,16 +74,34 @@ export default function ContactPage() {
                 />
               </div>
 
+              {/* Posted as `subject`, which contact.php requires and puts
+                  in the email subject line. It was a free-text input and
+                  was NOT marked required — the handler rejects an empty
+                  subject, so an enquiry sent without one silently failed. */}
               <div className="mb-6">
                 <label htmlFor="subject" className="mb-2 block text-sm text-text">
-                  Subject
+                  What is this about?
                 </label>
-                <input
+                <select
                   id="subject"
                   name="subject"
-                  type="text"
-                  className="w-full rounded-sm border border-border bg-bg-card px-4 py-3 text-text"
-                />
+                  required
+                  defaultValue=""
+                  className="form-select w-full rounded-sm border border-border bg-bg-card px-4 py-3 text-text"
+                >
+                  <option value="" disabled>
+                    Choose one…
+                  </option>
+                  {ENQUIRY_GROUPS.map((group) => (
+                    <optgroup key={group.label} label={group.label}>
+                      {group.options.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
               </div>
 
               <div className="mb-8">
