@@ -78,6 +78,20 @@ def main() -> int:
             FAIL.append(f"legacy URL /{legacy} no longer resolves")
         print(f"  [{'ok' if exists else 'FAIL':4}] legacy /{legacy}")
 
+    # CV downloads. The /cv page links straight at these, so a missing
+    # file is three dead download buttons on a page whose whole job is
+    # handing someone the CV.
+    print()
+    for cv in [
+        "Assets/CV/Archie_Cook_CV_OnePage.pdf",
+        "Assets/CV/Archie_Cook_CV_OnePage.docx",
+        "Assets/CV/Archie_Cook_CV_Full.docx",
+    ]:
+        exists = (OUT / cv).is_file()
+        if not exists:
+            FAIL.append(f"{cv} missing — the /cv download links would 404")
+        print(f"  [{'ok' if exists else 'FAIL':4}] {cv}")
+
     uni = list((OUT / "Assets" / "Uni Work Pages").rglob("*.html"))
     print(f"\n  [{'ok' if len(uni) == 16 else 'WARN':4}] {len(uni)} university module pages (expected 16)")
     if len(uni) != 16:
