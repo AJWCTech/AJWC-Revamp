@@ -108,7 +108,8 @@ export default function TermsPage() {
         <p>
           Good-faith security research is welcome, and I would genuinely rather
           hear about a problem than not. If you find something, the reporting
-          details are in security.txt.
+          details are in{" "}
+          <a href="/.well-known/security.txt">security.txt</a>.
         </p>
         <p>
           Please keep testing proportionate: no denial-of-service or load

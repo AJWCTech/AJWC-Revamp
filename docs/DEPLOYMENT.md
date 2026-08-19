@@ -140,6 +140,31 @@ form exactly as it is, and pay nothing extra.
 4. Check `/privacy.html`, `/cv.html`, a university module page, and submit
    the contact form once.
 
+### Settled since this document was first written
+
+**HSTS is now enabled**, at `max-age=86400`. The usual advice is to hold
+off until HTTPS is confirmed; it was confirmed on 19 August 2026:
+
+```
+https://www.ajwctechconsulting.com   200, valid certificate
+https://ajwctechconsulting.com       200, valid certificate
+http://www.ajwctechconsulting.com    301 -> https
+```
+
+One day, not one year, so a mistake self-heals in 24 hours rather than
+12 months. `includeSubDomains` is deliberately absent — it would force
+HTTPS on subdomains that may not have certificates. After a week without
+HTTPS problems, swap in the long line already sitting commented above it.
+
+**`security.txt` is restored.** It was missing from the export — a
+regression, since the live site serves it and `/terms` points at it by
+name. It now also documents *why* `script-src` allows `'unsafe-inline'`,
+so a researcher who finds it reports something useful rather than filing
+the CSP as the finding.
+
+**The pre-deploy check now covers both**, plus the CV downloads, so none
+of them can silently vanish from a future build.
+
 ---
 
 ## Option B — Vercel

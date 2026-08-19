@@ -66,12 +66,25 @@ Options -Indexes
     Header always set Cross-Origin-Opener-Policy "same-origin"
     Header always set Cross-Origin-Resource-Policy "same-origin"
 
-    # HSTS - only uncomment once HTTPS is confirmed working. A browser
-    # that sees this REFUSES plain http for the stated period and you
-    # cannot take that back quickly. Start at 300 seconds for a day.
-    # Header always set Strict-Transport-Security "max-age=300"
-    # Then, once confident:
+    # HSTS - ENABLED. The usual warning is "only turn this on once HTTPS
+    # is confirmed working", and it has been confirmed, on 19 Aug 2026:
+    #
+    #   https://www.ajwctechconsulting.com   200, valid certificate
+    #   https://ajwctechconsulting.com       200, valid certificate
+    #   http://www.ajwctechconsulting.com    301 -> https
+    #
+    # max-age is deliberately 86400 (one day), not a year. A browser that
+    # sees this header refuses plain http for the stated period and you
+    # cannot withdraw that, so the blast radius of a mistake is capped at
+    # 24 hours rather than 12 months.
+    #
+    # includeSubDomains is deliberately ABSENT: it would force HTTPS on
+    # every subdomain too, including any that do not have a certificate.
+    #
+    # After the site has run for a week without HTTPS problems, replace
+    # the line below with the long one to get real protection:
     # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    Header always set Strict-Transport-Security "max-age=86400"
 </IfModule>
 
 ServerSignature Off

@@ -63,6 +63,9 @@ def main() -> int:
         ("opengraph-image", "OG card (extensionless - needs ForceType)"),
         ("favicon.ico", ""),
         ("manifest.webmanifest", ""),
+        # The live site serves this and /terms points at it by name, so a
+        # missing one is a 404 on a link the site's own legal page makes.
+        (".well-known/security.txt", "RFC 9116 contact, referenced by /terms"),
     ]
     for name, note in required:
         exists = (OUT / name).exists()

@@ -1,0 +1,27 @@
+# Security contact information for ajwctechconsulting.com
+# Format: RFC 9116 - https://www.rfc-editor.org/rfc/rfc9116
+
+Contact: mailto:archiecook7878@gmail.com
+Expires: 2027-07-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://www.ajwctechconsulting.com/.well-known/security.txt
+
+# If you have found a security issue with this site, please email the
+# address above with the details and how to reproduce it. This is a
+# personal portfolio run by one person, so please allow a few days for
+# a reply.
+#
+# In scope: this website.
+# Out of scope: denial-of-service and load testing, automated scanning
+# heavy enough to affect availability, anything touching data belonging
+# to someone else, and social engineering of me or the hosting provider.
+#
+# There is no bug bounty and no payment offered. Credit is available on
+# request.
+#
+# Note on Content-Security-Policy: script-src on this site allows
+# 'unsafe-inline'. That is not an oversight. The site is a static export
+# of a Next.js application, which emits an inline hydration payload whose
+# hash changes on every build, so a hash allow-list cannot be maintained
+# and nonces require a server the static host does not provide. There is
+# no login, no user accounts and no user-generated content on this site.
