@@ -12,8 +12,13 @@
 export const SITE = {
   name: "Archie Cook",
   role: "Web Developer",
-  // TODO: confirm — domain for the new site.
-  url: "https://ajwctechconsulting.com",
+  /* The canonical origin, www included. Everything derives from this:
+     the sitemap, the OG and Twitter tags, the JSON-LD @ids and the
+     robots.txt sitemap line. Changing it here changes all of them.
+
+     www is canonical, so the .htaccess redirects the bare domain to it.
+     Serving both would split search ranking across two origins. */
+  url: "https://www.ajwctechconsulting.com",
   description:
     "Web developer building fast, accessible websites for small businesses. Three client sites shipped through AJWC Tech Consulting.",
   location: "Wiltshire, UK",

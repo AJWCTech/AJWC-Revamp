@@ -37,6 +37,11 @@ export const metadata: Metadata = {
   },
   description: SITE.description,
   authors: [{ name: SITE.name, url: SITE.url }],
+  /* Both /work and /work.html resolve on the host (the .htaccess maps the
+     extensionless form onto the file). A canonical stops search engines
+     treating those as two pages. "./" resolves per route against
+     metadataBase, so every page gets its own correct canonical. */
+  alternates: { canonical: "./" },
   openGraph: {
     type: "website",
     siteName: SITE.name,
