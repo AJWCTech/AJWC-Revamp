@@ -8,6 +8,7 @@ import { SCENE_STATES } from "@/content/site";
 import { useScrollProgress } from "./ScrollProvider";
 import { LogoMesh } from "./LogoMesh";
 import { ApertureMesh } from "./ApertureMesh";
+import { beginDrag, endDrag, addDrag, isDragging } from "@/lib/drag-spin";
 
 /* One canvas, fixed behind the DOM, mounted once for the life of the page.
  *
@@ -60,12 +61,6 @@ function BudgetProbe() {
   return null;
 }
 
-/* Inner pages hold one calm state instead of replaying the homepage's
-   choreography. SCENE_STATES describes the homepage's sections; on
-   /work or /privacy the scroll position means something different, so
-   sweeping through them made the mark arbitrarily vanish — /work asks
-   for 0.16 presence, which on an inner page just reads as "the logo is
-   missing". A steady, quieter presence keeps it visible everywhere. */
 /* Inner pages get their own two-point camera travel, driven by that
    page's own scroll.
 
@@ -89,7 +84,9 @@ const INNER_PAGE_TO = {
   markSpin: 1.5,
 };
 
-function Rig({ pointer }: { pointer: { x: number; y: number } }) {
+
+
+function Rig() {
   const { camera } = useThree();
   const { sceneIndex, progress } = useScrollProgress();
   const pathname = usePathname();
@@ -123,23 +120,54 @@ function Rig({ pointer }: { pointer: { x: number; y: number } }) {
       {/* Ambient form sits behind and stays present when the mark recedes,
           so a section without the logo is not an empty scene. */}
       <ApertureMesh presence={0.55 + (1 - presence) * 0.45} />
-      <LogoMesh presence={presence} spin={spin} pointer={pointer} />
+      <LogoMesh presence={presence} spin={spin} />
     </>
   );
 }
 
 export default function Scene() {
-  const [pointer, setPointer] = useState({ x: 0, y: 0 });
   const [visible, setVisible] = useState(true);
 
+  /* Drag-to-spin. The state itself lives in lib/drag-spin as a module
+     singleton: the DOM listeners are here and the per-frame integration
+     is in LogoMesh, so passing it as a prop meant one of them mutating
+     an object it received. */
+  const host = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const onMove = (e: PointerEvent) => {
-      setPointer({
-        x: (e.clientX / window.innerWidth) * 2 - 1,
-        y: (e.clientY / window.innerHeight) * 2 - 1,
-      });
+    const el = host.current;
+    if (!el) return;
+
+    let lastX = 0;
+    let activeId: number | null = null;
+
+    const onDown = (e: PointerEvent) => {
+      activeId = e.pointerId;
+      lastX = e.clientX;
+      beginDrag();
+      el.setPointerCapture(e.pointerId);
     };
-    window.addEventListener("pointermove", onMove, { passive: true });
+
+    const onMove = (e: PointerEvent) => {
+      if (!isDragging() || e.pointerId !== activeId) return;
+      const dx = e.clientX - lastX;
+      lastX = e.clientX;
+      // Feeds velocity rather than setting rotation, so a flick carries
+      // momentum and a slow drag tracks the hand.
+      addDrag(dx);
+    };
+
+    const onUp = (e: PointerEvent) => {
+      if (e.pointerId !== activeId) return;
+      endDrag();
+      activeId = null;
+      if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
+    };
+
+    el.addEventListener("pointerdown", onDown);
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerup", onUp);
+    el.addEventListener("pointercancel", onUp);
 
     // The scene has ambient idle motion, so it is never truly idle and
     // frameloop="demand" would freeze it. Suspending on tab-hide is the
@@ -148,13 +176,16 @@ export default function Scene() {
     document.addEventListener("visibilitychange", onVis);
 
     return () => {
-      window.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointerdown", onDown);
+      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointerup", onUp);
+      el.removeEventListener("pointercancel", onUp);
       document.removeEventListener("visibilitychange", onVis);
     };
   }, []);
 
   return (
-    <div className="scene-canvas" aria-hidden="true">
+    <div className="scene-canvas" aria-hidden="true" ref={host}>
       <Canvas
         dpr={[1, 2]}
         frameloop={visible ? "always" : "never"}
@@ -167,7 +198,7 @@ export default function Scene() {
         <directionalLight position={[-5, -2, 3]} intensity={0.5} color="#20C2D2" />
         <BudgetProbe />
         <Suspense fallback={null}>
-          <Rig pointer={pointer} />
+          <Rig />
         </Suspense>
       </Canvas>
     </div>

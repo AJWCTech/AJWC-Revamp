@@ -79,7 +79,29 @@ h2 {
   position: fixed;
   inset: 0;
   z-index: 0;
+  /* The canvas accepts pointer events so the mark can be grabbed and
+     spun. It sits BELOW .page-content, so links, buttons and text still
+     receive their events first — only bare background area reaches the
+     canvas. */
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.scene-canvas:active {
+  cursor: grabbing;
+}
+
+/* The vignette must not eat the drag, or the grabbable area would be a
+   ring around the edges of the screen. */
+.scene-canvas::after {
   pointer-events: none;
+}
+
+/* Nothing to grab when the scene is not running. */
+.scene-canvas:has(.static-mark) {
+  pointer-events: none;
+  cursor: auto;
 }
 
 /* Keeps text legible over the scene. The gradient is weighted to the

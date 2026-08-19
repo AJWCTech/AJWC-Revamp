@@ -5,6 +5,7 @@ import { useLoader, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
 import { ASSETS } from "@/content/assets";
+import { stepDragSpin } from "@/lib/drag-spin";
 
 /* The mark as real geometry.
  *
@@ -19,25 +20,17 @@ import { ASSETS } from "@/content/assets";
 const BRAND = new THREE.Color("#20C2D2");
 const DEEP = new THREE.Color("#12707A");
 
-export function LogoMesh({
-  presence,
-  spin,
-  pointer,
-}: {
-  presence: number;
-  spin: number;
-  pointer: { x: number; y: number };
-}) {
+export function LogoMesh({ presence, spin }: { presence: number; spin: number }) {
   const data = useLoader(SVGLoader, ASSETS["logo-mark"].path);
   const group = useRef<THREE.Group>(null);
 
-  /* Rotation is composed from two independent parts so neither can
-     cancel the other — see the note in useFrame.
-       idle: monotonically increasing, never pulled back
-       aimY/aimX: the smoothed scroll and pointer contribution */
+  /* Rotation is composed from independent parts that are ADDED, so none
+     can cancel another — see the note in useFrame.
+       idle:  monotonically increasing ambient drift
+       aimY:  the smoothed scroll-driven target
+       spin:  what the visitor has thrown it by (drag-spin store) */
   const idle = useRef(0);
   const aimY = useRef(0);
-  const aimX = useRef(0);
 
   const geometry = useMemo(() => {
     const geos: THREE.ExtrudeGeometry[] = [];
@@ -79,23 +72,29 @@ export function LogoMesh({
   useFrame((_, delta) => {
     if (!group.current) return;
 
-    /* Idle drift and the scroll/pointer target are kept SEPARATE and
-       added, rather than the drift being written into rotation.y and
-       then lerped toward the target.
+    /* Three independent parts, ADDED rather than blended, so none can
+       cancel another:
 
-       Doing both to the same value made them fight: the lerp pulled the
-       rotation back toward the target every frame, cancelling the drift.
-       On the homepage that was invisible, because the target moves with
-       scroll. On every other page the target is a constant, so the mark
-       converged on it within a second and then sat perfectly still —
-       which read as "the motion is broken on inner pages". */
+         idle           slow ambient drift, always advancing
+         aimY           the scroll-driven target, smoothed
+         stepDragSpin() what the visitor has spun it by, with momentum
+
+       An earlier version wrote the drift into rotation.y and then lerped
+       that same value toward the target. The two fought: the lerp pulled
+       the rotation back every frame and cancelled the drift. On the
+       homepage that was invisible because the target moves with scroll;
+       everywhere else the target is constant, so the mark converged and
+       froze.
+
+       The passive "follows the cursor around" behaviour is gone on
+       purpose. It moved whether you wanted it to or not, which read as
+       restless. Spinning is now something you choose to do. */
     idle.current += delta * 0.12;
+    aimY.current = THREE.MathUtils.lerp(aimY.current, spin, 0.04);
 
-    aimY.current = THREE.MathUtils.lerp(aimY.current, spin + pointer.x * 0.35, 0.04);
-    aimX.current = THREE.MathUtils.lerp(aimX.current, pointer.y * -0.25, 0.06);
-
-    group.current.rotation.y = idle.current + aimY.current;
-    group.current.rotation.x = aimX.current;
+    group.current.rotation.y = idle.current + aimY.current + stepDragSpin();
+    // A slight fixed tilt, so the extrusion depth reads at rest.
+    group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, 0.08, 0.05);
 
     /* Dev-only readout. "The mark is on screen but not moving" is hard to
        eyeball and was a real bug on inner pages, so the rotation is made
@@ -112,19 +111,11 @@ export function LogoMesh({
     );
     group.current.scale.setScalar(s);
 
-    /* Ease toward the layout position, plus a small offset that follows
-       the pointer in BOTH axes.
-
-       The pointer previously only fed rotation, so moving the cursor up
-       and down changed the mark's angle but never its position — which
-       reads as "it follows sideways but not vertically". The offsets are
-       deliberately small: this is a parallax cue, not the mark chasing
-       the mouse around the page. */
-    const followX = offsetX + pointer.x * 0.14;
-    const followY = offsetY + pointer.y * -0.12;
-
-    group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, followX, 0.06);
-    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, followY, 0.06);
+    /* Ease toward the layout position. The mark no longer drifts with
+       the pointer — it sits where the layout puts it, and the camera
+       travel driven by scroll is what moves it up and down the screen. */
+    group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, offsetX, 0.06);
+    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, offsetY, 0.06);
   });
 
   return (
