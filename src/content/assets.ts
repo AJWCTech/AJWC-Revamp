@@ -74,6 +74,11 @@ export const ASSETS = {
   },
 
   /* --- placeholders --------------------------------------------------- */
+  /* UNUSED as of the StaticScene change. The fallback for reduced-motion,
+     mobile and no-WebGL is now the real mark rendered as static SVG
+     (see components/StaticScene.tsx), which needs no asset and cannot
+     show placeholder text to a visitor. Kept here only in case a
+     photographic hero backdrop is wanted later; delete it otherwise. */
   "hero-poster": {
     kind: "image",
     path: "/placeholders/hero-poster.png",
@@ -81,8 +86,7 @@ export const ASSETS = {
     height: 1080,
     alt: "",
     placeholder: true,
-    brief:
-      "Static fallback shown instead of the 3D scene on reduced-motion, sub-md, and no-WebGL. Should be a rendered still of the actual hero scene once the 3D is final.",
+    brief: "Currently unused. The 3D fallback is StaticScene, not an image.",
   },
   "portrait": {
     kind: "image",

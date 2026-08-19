@@ -140,6 +140,122 @@ h2 {
   }
 }
 
+/* --- mobile nav ------------------------------------------------------
+   A 44px target, which is the WCAG 2.2 minimum and roughly a fingertip.
+   The bars morph into a cross rather than swapping icons, so the state
+   change is legible rather than a jump cut. */
+/* Deliberately sets no `display`. This class is defined after the
+   Tailwind import, so a `display` here would win against `lg:hidden` at
+   equal specificity and the toggle would show on desktop alongside the
+   full nav. Display and centring are applied with utilities on the
+   element instead. */
+.nav-toggle {
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+}
+
+.nav-bars {
+  display: block;
+  position: relative;
+  width: 22px;
+  height: 14px;
+}
+
+.nav-bars span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transition:
+    transform var(--dur-fast) var(--ease),
+    opacity var(--dur-fast) var(--ease);
+}
+
+.nav-bars span:nth-child(1) {
+  top: 0;
+}
+.nav-bars span:nth-child(2) {
+  top: 6px;
+}
+.nav-bars span:nth-child(3) {
+  top: 12px;
+}
+
+.nav-bars.is-open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.nav-bars.is-open span:nth-child(2) {
+  opacity: 0;
+}
+.nav-bars.is-open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Social icons: 44px target around a 20px glyph, so the tap area is
+   right without the icon itself being oversized. */
+.social-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: -12px;
+  color: var(--text-muted);
+  transition:
+    color var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+
+.social-icon:hover {
+  color: var(--brand);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social-icon:hover {
+    transform: none;
+  }
+}
+
+/* Static fallback mark. Placed to match where the extruded version sits
+   in the 3D scene, so the hero composition is the same on both paths and
+   only the motion differs. Opacity is low because it sits behind live
+   text, exactly as the 3D one does. */
+.static-mark {
+  position: absolute;
+  top: 42%;
+  right: 8%;
+  width: clamp(180px, 26vw, 380px);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  /* Low, because this sits behind live text on every page. An earlier
+     0.5 looked right on the homepage hero, where there is empty space
+     to its right, and swamped the contact card on an inner page. A
+     background element has to survive the busiest page, not the
+     emptiest. */
+  opacity: 0.12;
+}
+
+@media (max-width: 767px) {
+  .static-mark {
+    top: 30%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    width: 58vw;
+    opacity: 0.1;
+  }
+}
+
+/* Cards sit over the scene, so they need an opaque-enough ground of
+   their own or the mark reads straight through the text. */
+.over-scene {
+  background: color-mix(in srgb, var(--bg-card) 94%, transparent);
+  backdrop-filter: blur(6px);
+}
+
 /* --- long-form text -------------------------------------------------
    Scoped to .prose-block so the legal and CV pages get readable rhythm
    without every element needing a utility class. */

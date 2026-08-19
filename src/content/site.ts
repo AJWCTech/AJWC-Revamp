@@ -21,7 +21,9 @@ export const SITE = {
   email: "archiecook7878@gmail.com", // TODO: confirm — business address instead?
   links: {
     linkedin: "https://www.linkedin.com/in/archiecook",
-    github: "", // TODO: confirm
+    // TODO: confirm — inferred from the AJWCTech org that hosts the site
+    // repos. Change to a personal account if that is the one to show.
+    github: "https://github.com/AJWCTech",
   },
 } as const;
 

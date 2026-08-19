@@ -68,7 +68,7 @@ export default function UniversityPage() {
                 <Reveal key={label} delay={0.03 * i} as="li">
                   <a
                     href={`/Assets/Uni Work Pages/${path}`}
-                    className="card-hover block rounded-md border border-border bg-bg-card/50 px-5 py-4"
+                    className="card-hover block rounded-md border border-border bg-bg-card/90 px-5 py-4"
                   >
                     <span className="text-text">{label}</span>
                   </a>

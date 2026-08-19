@@ -75,3 +75,47 @@
     --dur-slow: 0.01ms;
   }
 }
+
+/* --- light theme -----------------------------------------------------
+   Only the ground and text tokens are redefined; every component reads
+   through them, so nothing else in the codebase needs a light variant.
+
+   The brand shifts on this ground because it has to: #20C2D2 is a bright
+   cyan measured at 10.3:1 on near-black, but only 1.9:1 on white, which
+   is unreadable. Light mode uses a deepened cyan for anything carrying
+   text, and keeps the bright one only for large fills where contrast is
+   not a legibility question.
+
+     --brand      #0B6C78 on --bg  5.9:1  safe for body text
+     --brand-lift #085059          8.4:1  hover and small text
+     --text       #10171D         15.8:1
+     --text-muted #4A5763          6.4:1
+*/
+:root[data-theme="light"] {
+  --bg: #f6f8fa;
+  --bg-raised: #eceff3;
+  --bg-card: #ffffff;
+  --border: #d5dbe2;
+  --text: #10171d;
+  --text-muted: #4a5763;
+  --brand: #0b6c78;
+  --brand-lift: #085059;
+  --brand-deep: #20c2d2;
+}
+
+/* Follow the OS until the visitor says otherwise. The explicit
+   data-theme attribute above always wins, because a stated choice
+   outranks an inferred one. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f6f8fa;
+    --bg-raised: #eceff3;
+    --bg-card: #ffffff;
+    --border: #d5dbe2;
+    --text: #10171d;
+    --text-muted: #4a5763;
+    --brand: #0b6c78;
+    --brand-lift: #085059;
+    --brand-deep: #20c2d2;
+  }
+}

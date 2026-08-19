@@ -48,12 +48,12 @@ export default async function ProjectAreaPage({ params }: PageProps<"/projects/[
                 {item.href ? (
                   <Link
                     href={item.href}
-                    className="card-hover block h-full rounded-md border border-border bg-bg-card/60 p-7"
+                    className="card-hover block h-full rounded-md border border-border bg-bg-card/90 p-7"
                   >
                     {inner}
                   </Link>
                 ) : (
-                  <div className="h-full rounded-md border border-border bg-bg-card/60 p-7">
+                  <div className="h-full rounded-md border border-border bg-bg-card/90 p-7">
                     {inner}
                   </div>
                 )}

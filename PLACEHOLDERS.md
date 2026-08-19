@@ -21,7 +21,7 @@ shift when a real asset lands.
 
 | Slot | Size | Ratio | Format | Appears | Should show |
 |---|---|---|---|---|---|
-| `hero-poster` | 1920×1080 | 16:9 | PNG → JPG | Hero, on all three fallback paths | A rendered still of the final 3D scene. Generate it **after** the 3D is signed off, so the fallback matches what everyone else sees. |
+| ~~`hero-poster`~~ | 1920×1080 | 16:9 | — | **Unused** | The 3D fallback is now `StaticScene` — the real mark as static SVG, so no asset is needed and no visitor can ever be shown placeholder text. Delete this entry unless a photographic hero backdrop is wanted later. |
 | `portrait` | 800×1000 | 4:5 | PNG → JPG | About section | Portrait photograph. Dark, side-lit, shot against something close to `#05070A` so it sits in the page rather than on it. |
 | `security-lab` | 1200×800 | 3:2 | PNG → JPG | Security section | **TODO: confirm** what this should be. Candidates: a lab/rig photo, a terminal capture, or a wall of certification badges. Currently unused in the page — it exists in the manifest awaiting a decision. |
 

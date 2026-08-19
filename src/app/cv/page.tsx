@@ -47,7 +47,7 @@ export default function CvPage() {
               <a
                 href={file.href}
                 download
-                className="card-hover block h-full rounded-md border border-border bg-bg-card/60 p-6"
+                className="card-hover block h-full rounded-md border border-border bg-bg-card/90 p-6"
               >
                 <span className="block text-text">{file.label}</span>
                 <span className="mt-2 block text-sm text-muted">{file.note}</span>

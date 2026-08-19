@@ -25,7 +25,7 @@ export default function ProjectsPage() {
             <Reveal key={area.href} delay={0.06 * i} as="li">
               <Link
                 href={area.href}
-                className="card-hover block h-full rounded-md border border-border bg-bg-card/60 p-7"
+                className="card-hover block h-full rounded-md border border-border bg-bg-card/90 p-7"
               >
                 <h2 className="text-xl text-text">{area.title}</h2>
                 <p className="mt-3 text-[0.9375rem]">{area.body}</p>

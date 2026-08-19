@@ -5,6 +5,8 @@
  * "should the 3D run" and every consumer agrees with it.
  */
 
+import { getMotionPreference, subscribeMotion } from "./motion-preference";
+
 export type Capabilities = {
   reducedMotion: boolean;
   smallViewport: boolean;
@@ -13,6 +15,7 @@ export type Capabilities = {
   /** The single flag components should branch on. */
   scene3d: boolean;
 };
+
 
 function hasWebGL(): boolean {
   try {
@@ -79,7 +82,12 @@ export function subscribe(onChange: () => void): () => void {
     onChange();
   };
   queries.forEach((q) => q.addEventListener("change", handler));
-  return () => queries.forEach((q) => q.removeEventListener("change", handler));
+  const unsubMotion = subscribeMotion(handler);
+
+  return () => {
+    queries.forEach((q) => q.removeEventListener("change", handler));
+    unsubMotion();
+  };
 }
 
 export function detect(): Capabilities {
@@ -114,6 +122,17 @@ export function detect(): Capabilities {
     if (override === "off") {
       return { reducedMotion, smallViewport, webgl, lowPower, scene3d: false };
     }
+  }
+
+  /* An explicit visitor preference beats the inferred defaults, in both
+     directions. "on" still cannot run without WebGL — a preference is
+     not a graphics card. */
+  const preference = getMotionPreference();
+  if (preference === "on") {
+    return { reducedMotion, smallViewport, webgl, lowPower, scene3d: webgl };
+  }
+  if (preference === "off") {
+    return { reducedMotion, smallViewport, webgl, lowPower, scene3d: false };
   }
 
   return {

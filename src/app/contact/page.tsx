@@ -107,7 +107,7 @@ export default function ContactPage() {
           </Reveal>
 
           <Reveal delay={0.12}>
-            <div className="rounded-md border border-border bg-bg-card/60 p-6">
+            <div className="over-scene rounded-md border border-border p-6">
               <h2 className="text-lg text-text">Or go direct</h2>
               <ul className="mt-5 grid gap-3 text-sm">
                 <li>

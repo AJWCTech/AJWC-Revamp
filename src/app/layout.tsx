@@ -73,6 +73,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${display.variable} ${body.variable} h-full`}
     >
       <body className="min-h-full">
+        {/* Applies the saved theme before first paint. Without this the
+            page renders dark for a frame and then flips, which is worse
+            than not offering a light theme at all.
+
+            NOTE: this is an inline script. The original site's .htaccess
+            sets script-src 'self' with no 'unsafe-inline' — if that CSP
+            is reused for this build, this needs a nonce or a hash. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('ajwc-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}`,
+          }}
+        />
         <a className="skip-link" href="#main">
           Skip to content
         </a>

@@ -97,9 +97,53 @@ export default function CookiesPage() {
             libraries this site uses are served from this domain, so loading a
             page does not tell Google or anyone else that you visited.
           </li>
-          <li>No localStorage, sessionStorage or other browser storage.</li>
           <li>No fingerprinting, and no attempt to identify you across sites.</li>
         </ul>
+
+        <h2>Browser storage</h2>
+        <p>
+          This site stores up to two items in your browser&rsquo;s
+          localStorage, and only if you use the toggles in the footer.
+        </p>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Key</th>
+                <th>Set when</th>
+                <th>Purpose</th>
+                <th>Expires</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ajwc-motion</td>
+                <td>Only if you switch motion on or off yourself</td>
+                <td>
+                  Remembers your choice so the site does not reset it on every
+                  page
+                </td>
+                <td>Until you clear your browser data</td>
+              </tr>
+              <tr>
+                <td>ajwc-theme</td>
+                <td>Only if you switch between dark and light yourself</td>
+                <td>Remembers which theme you chose</td>
+                <td>Until you clear your browser data</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Each holds a single word. Neither is an identifier, neither is ever
+          sent to the server, and neither can be read by any other site. If you
+          never touch the toggles, nothing is stored at all and the site simply
+          follows your operating system&rsquo;s reduced-motion and colour-scheme
+          settings.
+        </p>
+        <p>
+          There is no sessionStorage, no IndexedDB and no other browser storage.
+        </p>
 
         <h2>One thing worth flagging</h2>
         <p>
