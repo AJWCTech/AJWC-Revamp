@@ -135,11 +135,23 @@ export function detect(): Capabilities {
     return { reducedMotion, smallViewport, webgl, lowPower, scene3d: false };
   }
 
+  /* smallViewport no longer blocks the scene.
+   *
+   * It used to, on the "degrade on mobile" principle. But the scene is 7
+   * draw calls and 408 triangles — a 2015 phone would not notice it, and
+   * blocking it meant the mark, which is the site's signature, was absent
+   * from the device most visitors arrive on.
+   *
+   * The guards that remain are the ones that describe a real inability or
+   * a real preference: no WebGL, a software renderer or very low core
+   * count, or the visitor asking for reduced motion. smallViewport is
+   * still reported, and LogoMesh uses it to lay the scene out for a
+   * portrait screen rather than to switch it off. */
   return {
     reducedMotion,
     smallViewport,
     webgl,
     lowPower,
-    scene3d: webgl && !reducedMotion && !smallViewport && !lowPower,
+    scene3d: webgl && !reducedMotion && !lowPower,
   };
 }

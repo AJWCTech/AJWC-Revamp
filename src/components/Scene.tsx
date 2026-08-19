@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { usePathname } from "next/navigation";
 import { SCENE_STATES } from "@/content/site";
 import { useScrollProgress } from "./ScrollProvider";
 import { LogoMesh } from "./LogoMesh";
@@ -52,17 +53,34 @@ function BudgetProbe() {
   return null;
 }
 
+/* Inner pages hold one calm state instead of replaying the homepage's
+   choreography. SCENE_STATES describes the homepage's sections; on
+   /work or /privacy the scroll position means something different, so
+   sweeping through them made the mark arbitrarily vanish — /work asks
+   for 0.16 presence, which on an inner page just reads as "the logo is
+   missing". A steady, quieter presence keeps it visible everywhere. */
+const INNER_PAGE_STATE = {
+  camera: [0.6, 0.1, 4.6] as [number, number, number],
+  target: [0, 0, 0] as [number, number, number],
+  markPresence: 0.5,
+  // A fixed target rotation; the idle drift and pointer lean in LogoMesh
+  // still play over it, so the mark moves without travelling anywhere.
+  markSpin: 0.5,
+};
+
 function Rig({ pointer }: { pointer: { x: number; y: number } }) {
   const { camera } = useThree();
   const { sceneIndex } = useScrollProgress();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const camPos = useRef(new THREE.Vector3(0, 0, 4.2));
   const target = useRef(new THREE.Vector3());
 
   const i = Math.max(0, Math.min(SCENE_STATES.length - 1, Math.floor(sceneIndex)));
   const j = Math.min(SCENE_STATES.length - 1, i + 1);
-  const t = sceneIndex - i;
-  const from = SCENE_STATES[i];
-  const to = SCENE_STATES[j];
+  const t = isHome ? sceneIndex - i : 0;
+  const from = isHome ? SCENE_STATES[i] : INNER_PAGE_STATE;
+  const to = isHome ? SCENE_STATES[j] : INNER_PAGE_STATE;
 
   useFrame(() => {
     lerpVec(camPos.current, from.camera, to.camera, t);

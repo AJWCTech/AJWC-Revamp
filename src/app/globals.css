@@ -101,6 +101,23 @@ h2 {
     linear-gradient(to bottom, transparent 70%, var(--bg));
 }
 
+/* On a portrait screen the copy runs full width and the mark sits behind
+   it rather than beside it, so the vignette has to be centred and a
+   little stronger. Weighted to 22% (the desktop value) it darkens the
+   wrong side and leaves text sitting on bare geometry. */
+@media (max-width: 767px) {
+  .scene-canvas::after {
+    background:
+      radial-gradient(
+        ellipse 120% 60% at 50% 42%,
+        color-mix(in srgb, var(--bg) 82%, transparent) 30%,
+        color-mix(in srgb, var(--bg) 62%, transparent) 62%,
+        transparent 85%
+      ),
+      linear-gradient(to bottom, transparent 62%, var(--bg));
+  }
+}
+
 .page-content {
   position: relative;
   z-index: 1;
@@ -195,14 +212,18 @@ h2 {
   transform: translateY(-6px) rotate(-45deg);
 }
 
-/* Social icons: 44px target around a 20px glyph, so the tap area is
-   right without the icon itself being oversized. */
+/* Social icons: a 44px tap target around a 20px glyph, so the touch area
+   meets WCAG without the icon looking oversized.
+
+   No negative margin here. It used to carry `margin: -12px`, which made
+   every icon overhang its box on all four sides and left the row sitting
+   visibly left of the text above it in the footer. The offset now lives
+   once on the row, where it can be tuned against its neighbours. */
 .social-icon {
   display: grid;
   place-items: center;
   width: 44px;
   height: 44px;
-  margin: -12px;
   color: var(--text-muted);
   transition:
     color var(--dur-fast) var(--ease),
@@ -245,7 +266,7 @@ h2 {
     right: 50%;
     transform: translate(50%, -50%);
     width: 58vw;
-    opacity: 0.1;
+    opacity: 0.22;
   }
 }
 

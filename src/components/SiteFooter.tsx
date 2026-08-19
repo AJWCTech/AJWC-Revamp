@@ -26,19 +26,26 @@ function LinkedInIcon() {
 
 export function SiteFooter() {
   return (
-    <footer className="relative z-10 border-t border-border/60 py-14">
-      <div className="mx-auto flex max-w-[var(--content-width)] flex-col gap-10 px-5 sm:px-8 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex items-center gap-5">
-          <Mark className="mark-hover h-11 w-11 shrink-0 text-border" />
-          <p className="text-sm text-muted">
+    <footer className="relative z-10 border-t border-border/60 py-12 sm:py-14">
+      <div className="mx-auto flex max-w-[var(--content-width)] flex-col gap-9 px-5 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
+        {/* Identity. Stacked on a phone, where the mark beside two lines
+            of wrapping text left the address ragged. */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+          <Mark className="mark-hover h-10 w-10 shrink-0 text-border" />
+          <p className="text-sm leading-relaxed text-muted">
             {COMPANY.name}
             <br />
-            Company no. {COMPANY.number} · {SITE.location}
+            Company no. {COMPANY.number}
+            <span className="hidden sm:inline"> · {SITE.location}</span>
+            <span className="sm:hidden">
+              <br />
+              {SITE.location}
+            </span>
           </p>
         </div>
 
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+        <div className="flex flex-col gap-7 lg:flex-row lg:items-center lg:gap-10">
+          <ul className="flex flex-wrap gap-x-7 gap-y-2 text-sm">
             {FOOTER_LINKS.map((l) => (
               <li key={l.href}>
                 <Link href={l.href} className="link-sweep text-muted">
@@ -48,12 +55,15 @@ export function SiteFooter() {
             ))}
           </ul>
 
-          <div className="flex flex-wrap items-center gap-6">
+          <div className="flex flex-wrap items-center gap-x-7 gap-y-3">
             <ThemeToggle />
             <MotionToggle />
           </div>
 
-          <ul className="flex items-center gap-4">
+          {/* The negative margin lives on the row, not each icon, so the
+              44px tap targets still overhang their glyphs without the
+              first icon sitting left of everything above it. */}
+          <ul className="-ml-3 flex items-center gap-1">
             <li>
               <a
                 href={SITE.links.github}

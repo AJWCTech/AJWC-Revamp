@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef } from "react";
-import { useLoader, useFrame } from "@react-three/fiber";
+import { useLoader, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
 import { ASSETS } from "@/content/assets";
@@ -55,6 +55,19 @@ export function LogoMesh({
     return merged;
   }, [data]);
 
+  /* Layout adapts to the viewport's shape rather than assuming a wide
+     desktop window.
+
+     On a phone the copy runs the full width, so there is no empty right
+     half to put the mark in; it goes behind the text, centred and
+     smaller, and the vignette carries legibility. The old fixed offset
+     of x=1.15 pushed it off the side of a portrait frame entirely. */
+  const { viewport } = useThree();
+  const portrait = viewport.aspect < 1;
+  const offsetX = portrait ? 0 : 1.15;
+  const offsetY = portrait ? 0.55 : 0.15;
+  const sizeFactor = portrait ? 0.012 : 0.018;
+
   useFrame((_, delta) => {
     if (!group.current) return;
     // Ambient idle drift plus the scroll-driven spin, plus a gentle lean
@@ -70,15 +83,24 @@ export function LogoMesh({
       pointer.y * -0.25,
       0.06,
     );
-    const s = THREE.MathUtils.lerp(group.current.scale.x, 0.018 * (0.6 + presence * 0.4), 0.08);
+    const s = THREE.MathUtils.lerp(
+      group.current.scale.x,
+      sizeFactor * (0.6 + presence * 0.4),
+      0.08,
+    );
     group.current.scale.setScalar(s);
+
+    // Ease toward the layout position so a rotate between portrait and
+    // landscape slides rather than jumping.
+    group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, offsetX, 0.06);
+    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, offsetY, 0.06);
   });
 
   return (
-    /* Offset right of centre. Centred, the mark sat directly behind the
-       headline and made it hard to read; the copy owns the left half of
-       the viewport and the mark owns the right. */
-    <group ref={group} scale={0.018} position={[1.15, 0.15, 0]}>
+    /* On a wide screen the copy owns the left half and the mark owns the
+       right. On a portrait screen it centres behind the text instead —
+       see the layout constants above. */
+    <group ref={group} scale={sizeFactor} position={[offsetX, offsetY, 0]}>
       {/* Flip Y and recentre the 0..64 SVG box on the origin. */}
       <group scale={[1, -1, 1]} position={[-32, 32, -3]}>
         {geometry.map((g, i) => (
