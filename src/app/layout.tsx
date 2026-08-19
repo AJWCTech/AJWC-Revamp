@@ -73,8 +73,23 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
+    /* suppressHydrationWarning is required, not a workaround.
+     *
+     * The inline script below sets data-theme on this element before
+     * React hydrates, so the server HTML has no attribute and the client
+     * DOM has one. React reports that as a hydration mismatch.
+     *
+     * The alternative is rendering the theme on the server, which a
+     * static export cannot do — there is no request to read a cookie
+     * from — or dropping the script and accepting a flash of the wrong
+     * theme on every page load.
+     *
+     * The suppression applies only to this element's own attributes and
+     * one level deep. It does not hide mismatches anywhere else in the
+     * tree, so a genuine hydration bug elsewhere still surfaces. */
     <html
       lang="en-GB"
+      suppressHydrationWarning
       className={`${display.variable} ${body.variable} h-full`}
     >
       <body className="min-h-full">

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { PageHeader, Section } from "@/components/PageShell";
 import { Reveal } from "@/components/Reveal";
 import { ASSETS } from "@/content/assets";
-import { SITE, COMPANY } from "@/content/site";
+import { SITE, COMPANY, COLOPHON } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "About",
@@ -75,6 +75,34 @@ export default function AboutPage() {
           </Reveal>
         </div>
       </div>
+
+      <Section>
+        <Reveal>
+          <span className="mb-4 block font-display text-xs uppercase tracking-[0.2em] text-muted">
+            Colophon
+          </span>
+        </Reveal>
+        <Reveal delay={0.06}>
+          <h2 className="max-w-[22ch]">What this site is built with.</h2>
+        </Reveal>
+        <Reveal delay={0.12}>
+          <p className="mt-5 max-w-[54ch]">
+            The site you are reading is the one project you can inspect
+            yourself. The 3D mark is real geometry, extruded at runtime from
+            the same SVG the favicon uses, and the whole thing degrades to a
+            static page if your device or your settings ask it to.
+          </p>
+        </Reveal>
+        <Reveal delay={0.18}>
+          <ul className="mt-8 flex flex-wrap gap-2">
+            {COLOPHON.map((tech) => (
+              <li key={tech} className="tag">
+                {tech}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </Section>
 
       <Section raised>
         <Reveal>

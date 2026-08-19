@@ -124,9 +124,13 @@ export const SCENE_STATES: SceneState[] = [
   // The mark recedes hard through Work: the client sites are the subject
   // there, and a spinning logo competing with them would be the exact
   // "gimmicky" failure the brief warns about.
-  { id: "work", camera: [-2.4, -0.3, 4.6], target: [-0.9, 0, 0], markPresence: 0.16, markSpin: 0.9 },
-  { id: "about", camera: [0, 1.2, 5.0], target: [0, 0.3, 0], markPresence: 0.5, markSpin: 1.6 },
-  { id: "services", camera: [2.6, 0.4, 4.0], target: [1.0, 0, 0], markPresence: 0.4, markSpin: 2.3 },
+  /* Order must match the order the sections appear in page.tsx, which is
+     hero → work → services → about → contact. These two used to be the
+     other way round, so the camera moved to the About state while the
+     Services section was on screen. */
+  { id: "work", camera: [-2.4, -0.3, 4.6], target: [-0.9, 0, 0], markPresence: 0.3, markSpin: 0.9 },
+  { id: "services", camera: [2.6, 0.4, 4.0], target: [1.0, 0, 0], markPresence: 0.45, markSpin: 1.6 },
+  { id: "about", camera: [0, 1.2, 5.0], target: [0, 0.3, 0], markPresence: 0.55, markSpin: 2.3 },
   { id: "contact", camera: [0, 0, 3.0], target: [0, 0, 0], markPresence: 1, markSpin: 3.14159 },
 ];
 
@@ -174,6 +178,21 @@ export const PROJECT_AREAS = [
     title: "University work",
     body: "Three years of module work, archived in full.",
   },
+] as const;
+
+/* What this site itself is built with. On a web development portfolio
+ * the stack is evidence, not trivia — it is the one project a visitor
+ * can inspect for themselves. Keep it accurate: anyone can open the
+ * network tab and check. */
+export const COLOPHON = [
+  "Next.js 16 (App Router)",
+  "React 19",
+  "React Three Fiber",
+  "three.js",
+  "GSAP + ScrollTrigger",
+  "Lenis",
+  "Tailwind v4",
+  "TypeScript",
 ] as const;
 
 /* --- contact enquiry types -------------------------------------------

@@ -35,7 +35,7 @@ function lerpVec(
    (under 100 draw calls, under 150k triangles) can be measured rather
    than assumed. Stripped from production builds. */
 function BudgetProbe() {
-  const { gl } = useThree();
+  const { gl, camera } = useThree();
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;
     const w = window as unknown as { __sceneStats?: unknown };
@@ -46,10 +46,17 @@ function BudgetProbe() {
         geometries: gl.info.memory.geometries,
         textures: gl.info.memory.textures,
         programs: gl.info.programs?.length ?? 0,
+        // Camera position, so "does the scene actually travel as I
+        // scroll this page" is measurable rather than a judgement call.
+        camera: {
+          x: +camera.position.x.toFixed(3),
+          y: +camera.position.y.toFixed(3),
+          z: +camera.position.z.toFixed(3),
+        },
       };
-    }, 500);
+    }, 250);
     return () => clearInterval(id);
-  }, [gl]);
+  }, [gl, camera]);
   return null;
 }
 
@@ -59,18 +66,32 @@ function BudgetProbe() {
    sweeping through them made the mark arbitrarily vanish — /work asks
    for 0.16 presence, which on an inner page just reads as "the logo is
    missing". A steady, quieter presence keeps it visible everywhere. */
-const INNER_PAGE_STATE = {
-  camera: [0.6, 0.1, 4.6] as [number, number, number],
-  target: [0, 0, 0] as [number, number, number],
-  markPresence: 0.5,
-  // A fixed target rotation; the idle drift and pointer lean in LogoMesh
-  // still play over it, so the mark moves without travelling anywhere.
-  markSpin: 0.5,
+/* Inner pages get their own two-point camera travel, driven by that
+   page's own scroll.
+
+   A single fixed state was the first attempt and it was too still: with
+   the camera pinned, the only movement left was the pointer's sideways
+   lean and the idle spin, so the mark never drifted down the screen the
+   way it does on the homepage. These two states give the same
+   scroll-follows-you feel without borrowing the homepage's section
+   choreography, which means nothing on /privacy. */
+const INNER_PAGE_FROM = {
+  camera: [0.6, 0.75, 4.4] as [number, number, number],
+  target: [0, 0.25, 0] as [number, number, number],
+  markPresence: 0.55,
+  markSpin: 0.35,
+};
+
+const INNER_PAGE_TO = {
+  camera: [-0.5, -0.85, 5.0] as [number, number, number],
+  target: [0, -0.3, 0] as [number, number, number],
+  markPresence: 0.4,
+  markSpin: 1.5,
 };
 
 function Rig({ pointer }: { pointer: { x: number; y: number } }) {
   const { camera } = useThree();
-  const { sceneIndex } = useScrollProgress();
+  const { sceneIndex, progress } = useScrollProgress();
   const pathname = usePathname();
   const isHome = pathname === "/";
   const camPos = useRef(new THREE.Vector3(0, 0, 4.2));
@@ -78,9 +99,13 @@ function Rig({ pointer }: { pointer: { x: number; y: number } }) {
 
   const i = Math.max(0, Math.min(SCENE_STATES.length - 1, Math.floor(sceneIndex)));
   const j = Math.min(SCENE_STATES.length - 1, i + 1);
-  const t = isHome ? sceneIndex - i : 0;
-  const from = isHome ? SCENE_STATES[i] : INNER_PAGE_STATE;
-  const to = isHome ? SCENE_STATES[j] : INNER_PAGE_STATE;
+
+  /* Homepage: step through the section states. Inner pages: one smooth
+     sweep across the page's own scroll, so the mark travels vertically
+     there too rather than sitting at a fixed height. */
+  const t = isHome ? sceneIndex - i : progress;
+  const from = isHome ? SCENE_STATES[i] : INNER_PAGE_FROM;
+  const to = isHome ? SCENE_STATES[j] : INNER_PAGE_TO;
 
   useFrame(() => {
     lerpVec(camPos.current, from.camera, to.camera, t);

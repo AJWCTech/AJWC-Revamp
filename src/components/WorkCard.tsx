@@ -94,10 +94,7 @@ export function WorkCard({ item, index }: { item: WorkItem; index: number }) {
 
         <ul className="mt-5 flex flex-wrap gap-2">
           {item.stack.map((s) => (
-            <li
-              key={s}
-              className="rounded-pill border border-border px-3 py-1 text-xs text-muted"
-            >
+            <li key={s} className="tag">
               {s}
             </li>
           ))}

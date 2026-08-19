@@ -112,10 +112,19 @@ export function LogoMesh({
     );
     group.current.scale.setScalar(s);
 
-    // Ease toward the layout position so a rotate between portrait and
-    // landscape slides rather than jumping.
-    group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, offsetX, 0.06);
-    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, offsetY, 0.06);
+    /* Ease toward the layout position, plus a small offset that follows
+       the pointer in BOTH axes.
+
+       The pointer previously only fed rotation, so moving the cursor up
+       and down changed the mark's angle but never its position — which
+       reads as "it follows sideways but not vertically". The offsets are
+       deliberately small: this is a parallax cue, not the mark chasing
+       the mouse around the page. */
+    const followX = offsetX + pointer.x * 0.14;
+    const followY = offsetY + pointer.y * -0.12;
+
+    group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, followX, 0.06);
+    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, followY, 0.06);
   });
 
   return (
@@ -134,12 +143,14 @@ export function LogoMesh({
               emissive={BRAND}
               emissiveIntensity={i === 0 ? 0.22 : 0.06}
               transparent
-              /* Opacity follows presence almost linearly. An earlier
-                 version floored this at 0.35, which meant a state asking
-                 for 0.16 still rendered at 45% and the mark sat over the
-                 work cards competing with them. The floor is now low
-                 enough that "recede" actually recedes. */
-              opacity={0.04 + presence * 0.96}
+              /* Opacity follows presence, with a floor low enough that a
+                 receding state actually recedes.
+                 The multiplier was 0.96 with a 0.04 floor, which made the
+                 mark hard to pick out on the dark theme — a mid presence
+                 landed around 30% over a near-black ground. Lifted so it
+                 reads as an object rather than a smudge, while a state
+                 that asks to recede still gets out of the way. */
+              opacity={0.16 + presence * 0.84}
             />
           </mesh>
         ))}

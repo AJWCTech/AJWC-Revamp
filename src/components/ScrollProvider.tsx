@@ -50,6 +50,17 @@ export function ScrollProvider({
     };
     raf.current = requestAnimationFrame(loop);
 
+    /* Lenis caches the scroll limits when it initialises. The page grows
+       after that — fonts swap, images resolve, GSAP reveals run — and
+       Lenis keeps clamping to the old, shorter height, so the wheel
+       stops before the footer and the page appears to refuse to scroll
+       to the bottom. Native scrolling is unaffected, which is what makes
+       it confusing to diagnose.
+       Watching the body and telling Lenis to re-measure fixes it. */
+    const resizeObserver = new ResizeObserver(() => lenis.resize());
+    resizeObserver.observe(document.body);
+    window.addEventListener("load", () => lenis.resize());
+
     /* Anchor links must go through Lenis. A native jump moves the page
        without Lenis emitting "scroll", so the 3D scene keeps the state
        it had before the jump while the DOM is somewhere else entirely —
@@ -78,6 +89,7 @@ export function ScrollProvider({
 
     return () => {
       cancelAnimationFrame(raf.current);
+      resizeObserver.disconnect();
       document.removeEventListener("click", onAnchorClick);
       lenis.off("scroll", onScroll);
       lenis.destroy();

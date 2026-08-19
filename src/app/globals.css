@@ -270,6 +270,26 @@ h2 {
   }
 }
 
+/* --- tech tags -------------------------------------------------------
+   Stack labels on the work cards and the colophon.
+
+   These used to be a hairline border with no ground of their own, so on
+   the light theme they sat on whatever was behind and read as washed
+   out. They now carry their own surface and a firmer border and text
+   colour — roughly 20% more presence without becoming buttons, which
+   they are not: they are labels and must not look clickable. */
+.tag {
+  display: inline-block;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in srgb, var(--border) 100%, var(--text) 14%);
+  background: color-mix(in srgb, var(--bg-card) 92%, var(--text) 4%);
+  padding: 0.25rem 0.7rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--text-muted) 82%, var(--text) 18%);
+  white-space: nowrap;
+}
+
 /* --- form controls ---------------------------------------------------
    A native select renders with OS chrome that ignores the theme — on a
    dark ground it typically comes out as a light grey box with a blue
