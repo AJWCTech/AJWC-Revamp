@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 .next/
 node_modules/
+
+# Local logo scale-test pages are dev-only and must not ship in out/
+public/logo/_*.html

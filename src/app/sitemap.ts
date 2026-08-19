@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/content/site";
 import { PROJECT_PAGES } from "@/content/projects";
 
+/* Required by output: "export" — see robots.ts. */
+export const dynamic = "force-static";
+
 /* Built from the same data the pages are, so a new project area appears
  * in the sitemap without anyone remembering to add it here. */
 

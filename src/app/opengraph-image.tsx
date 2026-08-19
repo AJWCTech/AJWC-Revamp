@@ -6,6 +6,7 @@ import { MARK_PATH } from "@/components/Mark";
    out of sync with the name, role or brand colour. Next wires this into
    the OG and Twitter tags automatically via the file convention. */
 
+export const dynamic = "force-static";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = `${SITE.name} — ${SITE.role}`;
