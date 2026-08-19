@@ -5,7 +5,7 @@ import { useLoader, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
 import { ASSETS } from "@/content/assets";
-import { stepDragSpin } from "@/lib/drag-spin";
+import { stepDragSpin, getPointerX } from "@/lib/drag-spin";
 
 /* The mark as real geometry.
  *
@@ -84,13 +84,14 @@ export function LogoMesh({ presence, spin }: { presence: number; spin: number })
        the rotation back every frame and cancelled the drift. On the
        homepage that was invisible because the target moves with scroll;
        everywhere else the target is constant, so the mark converged and
-       froze.
-
-       The passive "follows the cursor around" behaviour is gone on
-       purpose. It moved whether you wanted it to or not, which read as
-       restless. Spinning is now something you choose to do. */
+       froze. */
     idle.current += delta * 0.12;
-    aimY.current = THREE.MathUtils.lerp(aimY.current, spin, 0.04);
+
+    /* The scroll target and a gentle lean toward the cursor's horizontal
+       position, smoothed together. The follow is left-and-right only:
+       vertical movement comes from the scroll-driven camera, and having
+       both chase the pointer made it feel twitchy. */
+    aimY.current = THREE.MathUtils.lerp(aimY.current, spin + getPointerX() * 0.3, 0.04);
 
     group.current.rotation.y = idle.current + aimY.current + stepDragSpin();
     // A slight fixed tilt, so the extrusion depth reads at rest.
@@ -111,10 +112,11 @@ export function LogoMesh({ presence, spin }: { presence: number; spin: number })
     );
     group.current.scale.setScalar(s);
 
-    /* Ease toward the layout position. The mark no longer drifts with
-       the pointer — it sits where the layout puts it, and the camera
-       travel driven by scroll is what moves it up and down the screen. */
-    group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, offsetX, 0.06);
+    /* Ease toward the layout position, with a small horizontal parallax
+       from the cursor. Vertical position is left to the scroll-driven
+       camera, so the mark does not chase the pointer up and down. */
+    const followX = offsetX + getPointerX() * 0.12;
+    group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, followX, 0.06);
     group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, offsetY, 0.06);
   });
 

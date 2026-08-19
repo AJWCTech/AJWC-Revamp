@@ -13,13 +13,26 @@
 type DragSpin = {
   /** Angular velocity in radians per frame, fed by pointer movement. */
   velocity: number;
-  /** True while a pointer is held down on the canvas. */
+  /** True while a pointer is held down and dragging the scene. */
   dragging: boolean;
   /** Total rotation the visitor has applied, in radians. */
   thrown: number;
+  /** Pointer x across the viewport, -1 (left) to 1 (right). */
+  pointerX: number;
 };
 
-const state: DragSpin = { velocity: 0, dragging: false, thrown: 0 };
+const state: DragSpin = { velocity: 0, dragging: false, thrown: 0, pointerX: 0 };
+
+/** Passive horizontal follow. Kept separate from the drag spin so the
+ *  two can coexist: the mark leans toward the cursor at rest, and is
+ *  spun deliberately when grabbed. */
+export function setPointerX(normalised: number): void {
+  state.pointerX = normalised;
+}
+
+export function getPointerX(): number {
+  return state.pointerX;
+}
 
 export function beginDrag(): void {
   state.dragging = true;

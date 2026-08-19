@@ -79,29 +79,19 @@ h2 {
   position: fixed;
   inset: 0;
   z-index: 0;
-  /* The canvas accepts pointer events so the mark can be grabbed and
-     spun. It sits BELOW .page-content, so links, buttons and text still
-     receive their events first — only bare background area reaches the
-     canvas. */
-  pointer-events: auto;
-  cursor: grab;
-  touch-action: pan-y;
-}
-
-.scene-canvas:active {
-  cursor: grabbing;
-}
-
-/* The vignette must not eat the drag, or the grabbable area would be a
-   ring around the edges of the screen. */
-.scene-canvas::after {
+  /* The canvas takes no pointer events. It sits behind .page-content,
+     which covers the whole page, so events would never reach it anyway —
+     the drag listeners are on window and filter by target instead. */
   pointer-events: none;
 }
 
-/* Nothing to grab when the scene is not running. */
-.scene-canvas:has(.static-mark) {
-  pointer-events: none;
-  cursor: auto;
+/* Applied to <html> while the scene is being dragged, so the cursor
+   reflects the grab everywhere rather than only over the canvas — which
+   the pointer never actually touches. */
+.is-spinning,
+.is-spinning * {
+  cursor: grabbing !important;
+  user-select: none;
 }
 
 /* Keeps text legible over the scene. The gradient is weighted to the
