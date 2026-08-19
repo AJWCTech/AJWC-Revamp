@@ -117,6 +117,45 @@ Decided in one place, `src/lib/capabilities.ts`, so every consumer agrees:
 `three` and R3F are dynamically imported, so on any fallback path that
 bundle is never fetched at all.
 
+## Pages
+
+Multi-page, mirroring the original site rather than collapsing it into one
+scroll. Nav and footer live in the root layout, and the WebGL canvas is
+mounted there too, so the 3D survives navigation instead of being torn
+down and rebuilt per route.
+
+| Route | Was |
+|---|---|
+| `/` | `index.html` |
+| `/work` | `client-work.html` |
+| `/services` | new |
+| `/projects` | `Projects.html` |
+| `/projects/[area]` | `web-dev-`, `app-development-`, `network-admin-`, `presentation-videos-projects.html` |
+| `/about` | new, absorbing the old home page's about section |
+| `/university` | `university-projects.html` |
+| `/cv`, `/cv/view` | `cv.html`, `view.html` |
+| `/contact` | `Contact.html` |
+| `/privacy`, `/terms`, `/cookies` | same |
+| `not-found` | `404.html` |
+
+The 16 university module pages are passed through `public/Assets/Uni Work
+Pages/` untouched, so their existing URLs keep working. They keep their
+original styling — they are an archive, not part of the redesign.
+
+⚠️ **The contact form posts to `contact.php`**, the original hardened
+handler (honeypot, per-IP rate limit, same-origin check), passed through
+`public/`. That only runs on an Apache/PHP host. If this is deployed to
+Vercel or any static host without PHP, the form silently 404s and needs
+replacing with a route handler.
+
+## Legal pages
+
+`/privacy`, `/terms` and `/cookies` carry wording and company details
+copied verbatim from the live site, including the real company number,
+ICO registration and registered office. They describe actual behaviour —
+if the site's cookie or data handling changes, those pages change first.
+Do not reword them to suit the design.
+
 ## Project layout
 
 ```

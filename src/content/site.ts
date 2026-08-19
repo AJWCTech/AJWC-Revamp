@@ -123,9 +123,60 @@ export const SCENE_STATES: SceneState[] = [
   { id: "contact", camera: [0, 0, 3.0], target: [0, 0, 0], markPresence: 1, markSpin: 3.14159 },
 ];
 
+/* Multi-page, mirroring the original site rather than collapsing it into
+ * one scroll. Every page the original had still exists. */
 export const NAV = [
-  { href: "#work", label: "Work" },
-  { href: "#about", label: "About" },
-  { href: "#services", label: "Services" },
-  { href: "#contact", label: "Contact" },
+  { href: "/work", label: "Work" },
+  { href: "/services", label: "Services" },
+  { href: "/projects", label: "Projects" },
+  { href: "/about", label: "About" },
+  { href: "/cv", label: "CV" },
+  { href: "/contact", label: "Contact" },
 ] as const;
+
+export const FOOTER_LINKS = [
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
+  { href: "/cookies", label: "Cookies" },
+] as const;
+
+/* The project index, carried over from the original site. */
+export const PROJECT_AREAS = [
+  {
+    href: "/projects/web-development",
+    title: "Web development",
+    body: "Sites and front-end work, from coursework through to shipped client builds.",
+  },
+  {
+    href: "/projects/app-development",
+    title: "App development",
+    body: "Application work, including coursework projects and prototypes.",
+  },
+  {
+    href: "/projects/network-admin",
+    title: "Network administration",
+    body: "Networking and infrastructure work from the degree.",
+  },
+  {
+    href: "/projects/presentation-videos",
+    title: "Presentation videos",
+    body: "Recorded presentations and walkthroughs.",
+  },
+  {
+    href: "/university",
+    title: "University work",
+    body: "Three years of module work, archived in full.",
+  },
+] as const;
+
+/* Company details as published on the original legal pages. These are
+ * real registered details — do not edit without checking Companies House
+ * and the ICO register. */
+export const COMPANY = {
+  name: "AJWC Tech Consulting Ltd",
+  number: "16867620",
+  ico: "ZC149054",
+  office: "3 The Row, Stanton St. Bernard, Marlborough, Wiltshire, SN8 4LR",
+  contact: "Archie Cook",
+  updated: "31 July 2026",
+} as const;

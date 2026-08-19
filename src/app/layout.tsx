@@ -3,6 +3,9 @@ import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/content/site";
 import { JsonLd } from "@/components/JsonLd";
+import { SceneHost } from "@/components/SceneHost";
+import { SiteNav } from "@/components/SiteNav";
+import { SiteFooter } from "@/components/SiteFooter";
 
 /* next/font self-hosts these at build time, so there is no request to
    Google and no flash of unstyled text. `display: swap` plus a fallback
@@ -73,7 +76,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <a className="skip-link" href="#main">
           Skip to content
         </a>
-        {children}
+        {/* SceneHost owns the one persistent canvas and the scroll
+            provider, so the 3D survives navigation between pages rather
+            than being torn down and rebuilt per route. */}
+        <SceneHost>
+          <SiteNav />
+          <div className="page-content pt-24">{children}</div>
+          <SiteFooter />
+        </SceneHost>
         <JsonLd />
       </body>
     </html>

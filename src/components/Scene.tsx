@@ -6,6 +6,7 @@ import * as THREE from "three";
 import { SCENE_STATES } from "@/content/site";
 import { useScrollProgress } from "./ScrollProvider";
 import { LogoMesh } from "./LogoMesh";
+import { ApertureMesh } from "./ApertureMesh";
 
 /* One canvas, fixed behind the DOM, mounted once for the life of the page.
  *
@@ -74,7 +75,14 @@ function Rig({ pointer }: { pointer: { x: number; y: number } }) {
   const presence = THREE.MathUtils.lerp(from.markPresence, to.markPresence, t);
   const spin = THREE.MathUtils.lerp(from.markSpin, to.markSpin, t);
 
-  return <LogoMesh presence={presence} spin={spin} pointer={pointer} />;
+  return (
+    <>
+      {/* Ambient form sits behind and stays present when the mark recedes,
+          so a section without the logo is not an empty scene. */}
+      <ApertureMesh presence={0.55 + (1 - presence) * 0.45} />
+      <LogoMesh presence={presence} spin={spin} pointer={pointer} />
+    </>
+  );
 }
 
 export default function Scene() {

@@ -140,6 +140,182 @@ h2 {
   }
 }
 
+/* --- long-form text -------------------------------------------------
+   Scoped to .prose-block so the legal and CV pages get readable rhythm
+   without every element needing a utility class. */
+.prose-block h2 {
+  margin-top: 3.25rem;
+  margin-bottom: 1rem;
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+}
+
+.prose-block h3 {
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  color: var(--text);
+}
+
+.prose-block p,
+.prose-block ul,
+.prose-block ol {
+  margin-bottom: 1.15rem;
+}
+
+.prose-block ul,
+.prose-block ol {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.prose-block ol {
+  list-style: decimal;
+}
+
+.prose-block li {
+  margin-bottom: 0.5rem;
+}
+
+.prose-block a {
+  color: var(--brand);
+  text-underline-offset: 3px;
+}
+
+.prose-block a:hover {
+  color: var(--brand-lift);
+}
+
+.prose-block table {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.prose-block th,
+.prose-block td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose-block th {
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--text);
+  background: var(--bg-card);
+}
+
+/* Wide tables scroll inside their own box rather than pushing the page
+   sideways on a phone. */
+.table-scroll {
+  overflow-x: auto;
+}
+
+/* --- hover language ------------------------------------------------
+   Derived from the mark: the monogram is built from 45° chisels and a
+   diamond silhouette, so hovers use diagonal sweeps and angular clips
+   rather than generic fades. One vocabulary, applied everywhere. */
+
+/* A rule that wipes in on the diagonal, matching the mark's chisel. */
+.link-sweep {
+  position: relative;
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.link-sweep::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  background: var(--brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  /* Skewed so the rule's ends are chiselled at the mark's angle. */
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.link-sweep:hover::after,
+.link-sweep:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.link-sweep:hover {
+  color: var(--text);
+}
+
+/* The mark itself: a small rotation toward the diamond's axis, plus a
+   lift in colour. Deliberately slight — the logo is an identity, not a
+   toy, and a full spin on hover would undercut it. */
+.mark-hover svg,
+svg.mark-hover {
+  transition:
+    transform var(--dur-mid) var(--ease),
+    color var(--dur-mid) var(--ease);
+}
+
+.mark-hover:hover svg,
+svg.mark-hover:hover {
+  transform: rotate(-45deg) scale(1.06);
+  color: var(--brand-lift);
+}
+
+/* Buttons: the fill arrives on the diagonal rather than fading in. */
+.btn-sweep {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn-sweep::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  background: var(--brand-lift);
+  transform: translateX(-101%) skewX(-12deg);
+  transition: transform var(--dur-mid) var(--ease);
+}
+
+.btn-sweep:hover::before,
+.btn-sweep:focus-visible::before {
+  transform: translateX(0) skewX(-12deg);
+}
+
+/* Cards lift and take a brand edge. Kept to a 2px rise: on a page that
+   already moves this much, a big hover is noise. */
+.card-hover {
+  transition:
+    transform var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-sweep::after,
+  .btn-sweep::before,
+  .mark-hover svg,
+  svg.mark-hover,
+  .card-hover {
+    transition: none;
+  }
+  .mark-hover:hover svg,
+  svg.mark-hover:hover,
+  .card-hover:hover {
+    transform: none;
+  }
+}
+
 /* Skip link — first focusable thing on the page. */
 .skip-link {
   position: absolute;
