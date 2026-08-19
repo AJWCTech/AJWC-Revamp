@@ -31,6 +31,14 @@ export function LogoMesh({
   const data = useLoader(SVGLoader, ASSETS["logo-mark"].path);
   const group = useRef<THREE.Group>(null);
 
+  /* Rotation is composed from two independent parts so neither can
+     cancel the other — see the note in useFrame.
+       idle: monotonically increasing, never pulled back
+       aimY/aimX: the smoothed scroll and pointer contribution */
+  const idle = useRef(0);
+  const aimY = useRef(0);
+  const aimX = useRef(0);
+
   const geometry = useMemo(() => {
     const geos: THREE.ExtrudeGeometry[] = [];
     for (const path of data.paths) {
@@ -70,19 +78,33 @@ export function LogoMesh({
 
   useFrame((_, delta) => {
     if (!group.current) return;
-    // Ambient idle drift plus the scroll-driven spin, plus a gentle lean
-    // toward the pointer. Multiplying by delta keeps it framerate-independent.
-    group.current.rotation.y += delta * 0.12;
-    group.current.rotation.y = THREE.MathUtils.lerp(
-      group.current.rotation.y,
-      spin + pointer.x * 0.35,
-      0.04,
-    );
-    group.current.rotation.x = THREE.MathUtils.lerp(
-      group.current.rotation.x,
-      pointer.y * -0.25,
-      0.06,
-    );
+
+    /* Idle drift and the scroll/pointer target are kept SEPARATE and
+       added, rather than the drift being written into rotation.y and
+       then lerped toward the target.
+
+       Doing both to the same value made them fight: the lerp pulled the
+       rotation back toward the target every frame, cancelling the drift.
+       On the homepage that was invisible, because the target moves with
+       scroll. On every other page the target is a constant, so the mark
+       converged on it within a second and then sat perfectly still —
+       which read as "the motion is broken on inner pages". */
+    idle.current += delta * 0.12;
+
+    aimY.current = THREE.MathUtils.lerp(aimY.current, spin + pointer.x * 0.35, 0.04);
+    aimX.current = THREE.MathUtils.lerp(aimX.current, pointer.y * -0.25, 0.06);
+
+    group.current.rotation.y = idle.current + aimY.current;
+    group.current.rotation.x = aimX.current;
+
+    /* Dev-only readout. "The mark is on screen but not moving" is hard to
+       eyeball and was a real bug on inner pages, so the rotation is made
+       measurable: sample window.__markRotation twice and see if it moved.
+       Stripped from production builds. */
+    if (process.env.NODE_ENV !== "production") {
+      (window as unknown as { __markRotation?: number }).__markRotation =
+        group.current.rotation.y;
+    }
     const s = THREE.MathUtils.lerp(
       group.current.scale.x,
       sizeFactor * (0.6 + presence * 0.4),
