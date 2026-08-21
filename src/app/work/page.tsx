@@ -6,16 +6,16 @@ import { WORK } from "@/content/site";
 export const metadata: Metadata = {
   title: "Client work",
   description:
-    "Websites built through AJWC Tech Consulting — three businesses, three different problems.",
+    "Three websites built through AJWC Tech Consulting, for an equipment hire company, a musician and an Oracle consultancy.",
 };
 
 export default function WorkPage() {
   return (
     <main id="main">
       <PageHeader
-        kicker="Client work"
-        title="Three businesses, three different problems."
-        intro="Every one of these had to earn something specific — a booking, an enquiry, a first impression that held up."
+        kicker="Work"
+        title="Sites built for clients"
+        intro="Three websites delivered through AJWC Tech Consulting, for an equipment hire company, a musician and an Oracle consultancy. Each had a specific job to do, set out below."
       />
 
       <div className="mx-auto max-w-[var(--content-width)] px-6 pb-28 sm:px-8">

@@ -26,8 +26,8 @@ export default function AboutPage() {
     <main id="main">
       <PageHeader
         kicker="About"
-        title="Built properly, not just quickly."
-        intro={`I'm Archie, a web developer in ${SITE.location}, and I run ${COMPANY.name}.`}
+        title="Archie Cook, web developer"
+        intro={`I work from ${SITE.location} and run ${COMPANY.name}, taking on design and build work for small businesses.`}
       />
 
       <div className="mx-auto max-w-[var(--content-width)] px-6 pb-24 sm:px-8">
@@ -36,16 +36,16 @@ export default function AboutPage() {
             <Reveal>
               <p className="max-w-[56ch]">
                 I hold a BSc (Hons) in Cyber Security from Bath Spa University.
-                That degree is why the sites I build are secure, fast and
-                accessible by default rather than as an afterthought — it is
-                not what I sell.
+                It is the reason security, performance and accessibility are
+                built into the work rather than added at the end, though web
+                development is what I do day to day.
               </p>
             </Reveal>
             <Reveal delay={0.08}>
               <p className="mt-4 max-w-[56ch]">
-                What I sell is a website that does a job for your business,
-                delivered without jargon and handed over in a state you can
-                maintain. Three are live now, built for very different clients.
+                Three client sites are live so far, for an equipment hire
+                company, a musician and an Oracle consultancy. Each was handed
+                over with documentation so the owner can maintain it.
               </p>
             </Reveal>
 
@@ -83,14 +83,14 @@ export default function AboutPage() {
           </span>
         </Reveal>
         <Reveal delay={0.06}>
-          <h2 className="max-w-[22ch]">What this site is built with.</h2>
+          <h2 className="max-w-[22ch]">How this site is built</h2>
         </Reveal>
         <Reveal delay={0.12}>
           <p className="mt-5 max-w-[54ch]">
-            The site you are reading is the one project you can inspect
-            yourself. The 3D mark is real geometry, extruded at runtime from
-            the same SVG the favicon uses, and the whole thing degrades to a
-            static page if your device or your settings ask it to.
+            The logo in the background is 3D geometry, extruded at runtime from
+            the same SVG file the favicon uses. If your device cannot run it,
+            or your system settings ask for reduced motion, the page falls back
+            to a static version with no loss of content.
           </p>
         </Reveal>
         <Reveal delay={0.18}>
@@ -106,13 +106,12 @@ export default function AboutPage() {
 
       <Section raised>
         <Reveal>
-          <h2 className="max-w-[20ch]">The degree, in full</h2>
+          <h2 className="max-w-[20ch]">University work</h2>
         </Reveal>
         <Reveal delay={0.08}>
           <p className="mt-5 max-w-[56ch]">
-            Three years of module work is archived on this site rather than
-            summarised — coursework, reports and presentations, kept as they
-            were submitted.
+            Coursework, reports and presentations from all three years are
+            archived here as they were submitted, rather than summarised.
           </p>
         </Reveal>
         <Reveal delay={0.16}>
@@ -121,13 +120,13 @@ export default function AboutPage() {
               href="/university"
               className="btn-sweep rounded-pill border border-brand px-7 py-3 font-display text-[0.9375rem] text-brand"
             >
-              University work
+              Browse module work
             </Link>
             <Link
               href="/cv"
               className="link-sweep self-center text-muted"
             >
-              Or read the CV
+              Read the CV
             </Link>
           </p>
         </Reveal>

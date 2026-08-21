@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 const FILES = [
   {
     label: "One-page CV",
-    note: "PDF · the version to send",
+    note: "PDF",
     href: "/Assets/CV/Archie_Cook_CV_OnePage.pdf",
   },
   {
@@ -26,7 +26,7 @@ const FILES = [
   },
   {
     label: "Full CV",
-    note: "Word document · the long version",
+    note: "Word document, full version",
     href: "/Assets/CV/Archie_Cook_CV_Full.docx",
   },
 ];
@@ -36,8 +36,8 @@ export default function CvPage() {
     <main id="main">
       <PageHeader
         kicker="CV"
-        title="The short version, on paper."
-        intro="Download it, or read it in the browser. Served directly from this site — no viewer, no third party, no tracking."
+        title="Curriculum vitae"
+        intro="Download the CV or read it in the browser. The files are served from this domain, with no third-party viewer involved."
       />
 
       <div className="mx-auto max-w-[var(--content-width)] px-6 pb-28 sm:px-8">

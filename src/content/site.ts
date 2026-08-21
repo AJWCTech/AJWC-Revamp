@@ -20,7 +20,7 @@ export const SITE = {
      Serving both would split search ranking across two origins. */
   url: "https://www.ajwctechconsulting.com",
   description:
-    "Web developer building fast, accessible websites for small businesses. Three client sites shipped through AJWC Tech Consulting.",
+    "Web developer in Wiltshire. Design and build for small businesses, delivered through AJWC Tech Consulting Ltd.",
   location: "Wiltshire, UK",
   company: "AJWC Tech Consulting Ltd",
   email: "archiecook7878@gmail.com", // TODO: confirm — business address instead?
@@ -54,9 +54,9 @@ export const WORK: WorkItem[] = [
     client: "Kritikal Soundsystem",
     sector: "Audio hire, Bristol",
     summary:
-      "A hire catalogue people can actually price up, instead of a phone number and a promise.",
+      "A hire catalogue listing each system by capacity, with prices on the page.",
     outcome:
-      "Real prices on the page, so enquiries arrive already qualified.",
+      "Enquiries arrive from people who already know the cost and the specification.",
     stack: ["Design", "Build", "Content structure"],
     assetKey: "work-kritikal",
     // TODO: confirm — live URL to link the card to.
@@ -66,8 +66,8 @@ export const WORK: WorkItem[] = [
     client: "Umbra",
     sector: "Artist",
     summary:
-      "A release page built around one striking visual idea, kept fast enough to open on a phone at a gig.",
-    outcome: "A site that looks like the music without costing load time.",
+      "A release page built around a single WebGL visual, kept light enough to load on mobile data.",
+    outcome: "The artwork carries the page, and it still opens quickly on a phone.",
     stack: ["Design", "Build", "WebGL"],
     assetKey: "work-umbra",
   },
@@ -76,8 +76,8 @@ export const WORK: WorkItem[] = [
     client: "White Phoenix",
     sector: "Oracle consultancy",
     summary:
-      "A credibility-first site for a consultancy selling to enterprise buyers who check before they call.",
-    outcome: "Positions a two-person firm to be taken seriously by large clients.",
+      "A site for an Oracle consultancy whose buyers research a supplier before making contact.",
+    outcome: "Sets out the firm's experience where prospective clients will look for it.",
     stack: ["Design", "Build", "3D"],
     assetKey: "work-white-phoenix",
   },
@@ -88,19 +88,19 @@ export const WORK: WorkItem[] = [
 export const SERVICES = [
   {
     title: "Websites for small businesses",
-    body: "Design and build, start to finish. Fast, accessible, and structured so customers find what they came for.",
+    body: "Design and build from scratch, organised so customers find what they came for and quick to load on a phone.",
   },
   {
     title: "Redesigns and rebuilds",
-    body: "An existing site that loads slowly, reads badly on a phone, or no longer matches the business.",
+    body: "For a site that loads slowly, reads badly on a phone, or no longer matches the business behind it.",
   },
   {
     title: "Interactive and 3D work",
-    body: "Motion and WebGL where it earns its place — for brands that need to look different, not just present.",
+    body: "Motion and WebGL for brands that need the site itself to make an impression.",
   },
   {
     title: "Handover and support",
-    body: "Built so you can run it yourself, with the option of keeping me on for changes.",
+    body: "Built so you can run it yourself. I can stay on for changes if you would rather not.",
   },
 ] as const;
 
@@ -156,7 +156,7 @@ export const PROJECT_AREAS = [
   {
     href: "/projects/web-development",
     title: "Web development",
-    body: "Sites and front-end work, from coursework through to shipped client builds.",
+    body: "Front-end and full-site work, from first-year coursework through to the client builds now live.",
   },
   {
     href: "/projects/app-development",

@@ -21,8 +21,8 @@ export default function CvViewPage() {
     <main id="main">
       <PageHeader
         kicker="CV"
-        title="Read it here."
-        intro="If the preview does not load on your device, download the PDF instead — it is served from this site directly."
+        title="CV preview"
+        intro="If the preview does not load on your device, download the PDF instead. It is served directly from this domain."
       />
 
       <div className="mx-auto max-w-[var(--content-width)] px-6 pb-28 sm:px-8">

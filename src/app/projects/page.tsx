@@ -7,7 +7,7 @@ import { PROJECT_AREAS } from "@/content/site";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Project index — web development, app development, network administration, presentations and university work.",
+    "Project index: web development, app development, network administration, presentation videos and university work.",
 };
 
 export default function ProjectsPage() {
@@ -15,8 +15,8 @@ export default function ProjectsPage() {
     <main id="main">
       <PageHeader
         kicker="Projects"
-        title="Everything else I've built."
-        intro="Alongside client work, this is the wider body of projects — coursework, prototypes and recorded presentations, kept online rather than summarised."
+        title="Projects and coursework"
+        intro="Work outside the client projects: university coursework, prototypes and recorded presentations, archived here in full."
       />
 
       <div className="mx-auto max-w-[var(--content-width)] px-6 pb-28 sm:px-8">

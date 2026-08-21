@@ -15,8 +15,8 @@ export default function ServicesPage() {
     <main id="main">
       <PageHeader
         kicker="Services"
-        title="What I can build for you."
-        intro="Design and build, start to finish — or a specific piece of work on a site you already have."
+        title="What I build"
+        intro="A complete site from design through to launch, or a defined piece of work on a site you already have."
       />
 
       <div className="mx-auto max-w-[var(--content-width)] px-6 pb-20 sm:px-8">
@@ -35,12 +35,12 @@ export default function ServicesPage() {
       <section className="border-t border-border/60 bg-brand py-24 text-bg">
         <div className="mx-auto max-w-[720px] px-6 text-center sm:px-8">
           <Reveal>
-            <h2 className="text-bg">Got a project in mind?</h2>
+            <h2 className="text-bg">Start a project</h2>
           </Reveal>
           <Reveal delay={0.08}>
-            <p className="mx-auto mt-5 max-w-[44ch] text-bg/80">
-              Tell me what your business does and who needs to find it.
-              I&rsquo;ll tell you what it takes.
+            <p className="mx-auto mt-5 max-w-[46ch] text-bg/80">
+              Send over what your business does and what the site needs to do,
+              and I will come back with an approach and a price.
             </p>
           </Reveal>
           <Reveal delay={0.16}>

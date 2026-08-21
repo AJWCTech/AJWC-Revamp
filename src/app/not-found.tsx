@@ -7,8 +7,8 @@ export default function NotFound() {
     <main id="main">
       <PageHeader
         kicker="404"
-        title="That page isn't here."
-        intro="It may have moved, or the link may be wrong. Everything the site has is below."
+        title="Page not found"
+        intro="The page may have moved, or the link may be wrong. Every page on the site is listed below."
       />
 
       <div className="mx-auto max-w-[var(--content-width)] px-6 pb-32 sm:px-8">

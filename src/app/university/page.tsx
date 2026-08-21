@@ -53,8 +53,8 @@ export default function UniversityPage() {
     <main id="main">
       <PageHeader
         kicker="University"
-        title="Three years, kept in full."
-        intro="BSc (Hons) Cyber Security, Bath Spa University. Module work is archived as it was submitted rather than summarised — including the parts that show the learning."
+        title="BSc (Hons) Cyber Security"
+        intro="Bath Spa University. Module work from all three years, archived here as it was submitted."
       />
 
       <div className="mx-auto max-w-[var(--content-width)] px-6 pb-28 sm:px-8">

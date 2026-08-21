@@ -28,13 +28,13 @@ export default function Home() {
           <Kicker>{COMPANY.name}</Kicker>
         </Reveal>
         <Reveal delay={0.08}>
-          <h1 className="max-w-[15ch]">Websites that win you the work.</h1>
+          <h1 className="max-w-[15ch]">Web development for small businesses</h1>
         </Reveal>
         <Reveal delay={0.16}>
           <p className="mt-8 max-w-[50ch] text-lg">
             I&rsquo;m Archie, a web developer in {SITE.location}. I design and
-            build fast, accessible sites for small businesses — then hand them
-            over so you can actually run them.
+            build websites for small businesses, then hand them over documented
+            and ready for you to maintain.
           </p>
         </Reveal>
         <Reveal delay={0.24}>
@@ -58,10 +58,16 @@ export default function Home() {
       {/* --- Work --------------------------------------------------- */}
       <Section id="work">
         <Reveal>
-          <Kicker>Selected work</Kicker>
+          <Kicker>Work</Kicker>
         </Reveal>
         <Reveal delay={0.08}>
-          <h2 className="max-w-[18ch]">Three businesses, three different problems.</h2>
+          <h2 className="max-w-[18ch]">Recent client work</h2>
+        </Reveal>
+        <Reveal delay={0.14}>
+          <p className="mt-6 max-w-[52ch]">
+            Three sites built through AJWC Tech Consulting, for an equipment hire
+            company, a musician and an Oracle consultancy.
+          </p>
         </Reveal>
 
         <ul className="work-grid mt-16 grid gap-14 md:grid-cols-2 lg:grid-cols-3">
@@ -85,7 +91,7 @@ export default function Home() {
           <Kicker>Services</Kicker>
         </Reveal>
         <Reveal delay={0.08}>
-          <h2 className="max-w-[18ch]">What I can build for you.</h2>
+          <h2 className="max-w-[18ch]">What I build</h2>
         </Reveal>
 
         <ul className="mt-14 grid gap-x-14 gap-y-10 sm:grid-cols-2">
@@ -101,7 +107,7 @@ export default function Home() {
 
         <p className="mt-14">
           <Link href="/services" className="link-sweep text-brand">
-            More on services &rarr;
+            All services &rarr;
           </Link>
         </p>
       </Section>
@@ -112,19 +118,19 @@ export default function Home() {
           <Kicker>About</Kicker>
         </Reveal>
         <Reveal delay={0.08}>
-          <h2 className="max-w-[18ch]">Built properly, not just quickly.</h2>
+          <h2 className="max-w-[18ch]">Background</h2>
         </Reveal>
         <Reveal delay={0.16}>
           <p className="mt-6 max-w-[54ch]">
-            I hold a BSc (Hons) in Cyber Security from Bath Spa University. That
-            is why the sites I build are secure, fast and accessible by default
-            rather than as an afterthought — it is not what I sell.
+            I hold a BSc (Hons) in Cyber Security from Bath Spa University. The
+            degree is the reason security, performance and accessibility are
+            part of how I build rather than something added at the end.
           </p>
         </Reveal>
         <Reveal delay={0.24}>
           <p className="mt-8 flex flex-wrap gap-6">
             <Link href="/about" className="link-sweep text-brand">
-              More about me &rarr;
+              About me &rarr;
             </Link>
             <Link href="/projects" className="link-sweep text-muted">
               Projects and university work
@@ -137,12 +143,12 @@ export default function Home() {
       <section id="contact" className="border-t border-border/60 bg-brand py-24 text-bg">
         <div className="mx-auto max-w-[720px] px-6 text-center sm:px-8">
           <Reveal>
-            <h2 className="text-bg">Got a project in mind?</h2>
+            <h2 className="text-bg">Start a project</h2>
           </Reveal>
           <Reveal delay={0.08}>
-            <p className="mx-auto mt-5 max-w-[44ch] text-bg/80">
-              Tell me what your business does and who needs to find it.
-              I&rsquo;ll tell you what it takes.
+            <p className="mx-auto mt-5 max-w-[46ch] text-bg/80">
+              Send over what your business does and what the site needs to do,
+              and I will come back with an approach and a price.
             </p>
           </Reveal>
           <Reveal delay={0.16}>

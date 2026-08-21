@@ -6,7 +6,7 @@ import { SITE, ENQUIRY_GROUPS } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Start a project, or ask a question. Wiltshire, UK.",
+  description: "Enquiries about new sites, quotes, contract work and support. Based in Wiltshire, UK.",
 };
 
 /* The form posts to contact.php, which is passed through public/ and is
@@ -20,8 +20,8 @@ export default function ContactPage() {
     <main id="main">
       <PageHeader
         kicker="Contact"
-        title="Tell me what you need."
-        intro={`What your business does, who needs to find it, and roughly when. Based in ${SITE.location}, working with clients anywhere.`}
+        title="Get in touch"
+        intro={`Tell me what your business does and what you need the site to do. Based in ${SITE.location}, working with clients anywhere.`}
       />
 
       <div className="mx-auto max-w-[var(--content-width)] px-6 pb-28 sm:px-8">
@@ -121,7 +121,7 @@ export default function ContactPage() {
                 type="submit"
                 className="btn-sweep rounded-pill bg-brand px-8 py-3 font-display text-[0.9375rem] text-bg"
               >
-                Send it
+                Send enquiry
               </button>
 
               <p className="mt-6 text-sm text-muted">
@@ -136,7 +136,7 @@ export default function ContactPage() {
 
           <Reveal delay={0.12}>
             <div className="over-scene rounded-md border border-border p-6">
-              <h2 className="text-lg text-text">Or go direct</h2>
+              <h2 className="text-lg text-text">Direct contact</h2>
               <ul className="mt-5 grid gap-3 text-sm">
                 <li>
                   <a href={`mailto:${SITE.email}`} className="link-sweep text-brand">
